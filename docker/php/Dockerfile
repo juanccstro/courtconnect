@@ -1,5 +1,5 @@
 ARG php_version
-FROM php:${php_version}
+FROM php:${php_version}-apache
 
 # prepare install
 RUN apt-get update --fix-missing
@@ -59,15 +59,17 @@ RUN mv phpcs.phar /usr/local/bin/phpcs
 #Cambiamos document root para apuntar al directorio del index
 ARG document_root
 ENV APACHE_DOCUMENT_ROOT=${document_root}
-RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
-RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
-RUN sed -i 's/-Indexes/+Indexes/' /etc/apache2/conf-available/docker-php.conf
+#RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
+#RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
+#RUN sed -i 's/-Indexes/+Indexes/' /etc/apache2/conf-available/docker-php.conf
 
 COPY xdebug.ini /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 
 #Modificar variables php.ini
 ADD ./custom-php.ini /usr/local/etc/php/conf.d/custom-php.ini
 
+COPY apache.conf /etc/apache2/sites-available/000-default.conf
+WORKDIR /var/www/html
 
 RUN a2enmod rewrite
 RUN a2enmod headers
