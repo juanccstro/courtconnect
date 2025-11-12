@@ -1,21 +1,27 @@
 :root {
-    --cc-primary: #0057b8;   /* Azul */
-    --cc-secondary: #ff6600; /* Naranja */
+    --cc-primary: #0057b8;   /* Azul deportivo */
+    --cc-secondary: #ff6600; /* Naranja energía */
     --cc-dark: #111;
     --cc-light: #f8f9fa;
 }
 
+/* Tipografía base */
 body {
     font-family: "Inter", Arial, sans-serif;
+    background-color: var(--cc-light);
+    color: var(--cc-dark);
+    margin: 0;
+    padding: 0;
 }
 
-.bg-primary {
-    background-color: var(--cc-primary) !important;
-}
-
+/* Botones */
 .btn-primary {
     background-color: var(--cc-primary);
     border: none;
+}
+
+.btn-primary:hover {
+    background-color: #003d82;
 }
 
 .btn-outline-primary {
@@ -28,8 +34,9 @@ body {
     color: #fff;
 }
 
+/* Navbar */
 .navbar.bg-dark {
-    background-color: #111 !important;
+    background-color: var(--cc-dark) !important;
 }
 
 .navbar-nav .nav-link {
@@ -40,9 +47,41 @@ body {
 
 .navbar-nav .nav-link:hover {
     color: var(--cc-secondary) !important;
-    text-decoration: none;
 }
 
+/* Footer */
 footer {
     font-size: 0.9rem;
+    background-color: var(--cc-dark);
+    color: #fff;
+}
+
+/* Página 404 */
+.error-404 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    min-height: 70vh;
+    color: var(--cc-dark);
+}
+
+.error-404 h1 {
+    font-size: 7rem;
+    font-weight: 700;
+    color: var(--cc-primary);
+    margin-bottom: 1rem;
+}
+
+.error-404 p {
+    font-size: 1.5rem;
+    font-weight: 500;
+    margin-bottom: 2rem;
+}
+
+.error-404 .btn {
+    padding: 0.6rem 1.2rem;
+    border-radius: 8px;
+    font-weight: 500;
 }

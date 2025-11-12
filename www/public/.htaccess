@@ -1,0 +1,10 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Si la petición NO es a un archivo ni carpeta real
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+
+    # Redirige todo a index.php
+    RewriteRule ^ index.php [QSA,L]
+</IfModule>
