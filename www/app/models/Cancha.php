@@ -26,7 +26,7 @@ class Cancha
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function create($data)
+    public function crear($data)
     {
         $sql = "INSERT INTO canchas (nombre, ubicacion, imagen, tipo, estado)
                 VALUES (?, ?, ?, ?, ?)";

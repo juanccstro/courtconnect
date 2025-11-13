@@ -45,27 +45,27 @@ class Router {
 
             case 'canchas/crear':
                 require_once __DIR__ . '/../controllers/CanchaController.php';
-                (new CanchaController())->create();
+                (new CanchaController())->crear();
                 break;
 
-            case 'canchas/store':
+            case 'canchas/guardar':
                 require_once __DIR__ . '/../controllers/CanchaController.php';
-                (new CanchaController())->store();
+                (new CanchaController())->guardar();
                 break;
 
             case (preg_match('/^canchas\/editar\/(\d+)$/', $path, $m) ? true : false):
                 require_once __DIR__ . '/../controllers/CanchaController.php';
-                (new CanchaController())->edit($m[1]);
+                (new CanchaController())->editar($m[1]);
                 break;
 
-            case (preg_match('/^canchas\/update\/(\d+)$/', $path, $m) ? true : false):
+            case (preg_match('/^canchas\/actualizar\/(\d+)$/', $path, $m) ? true : false):
                 require_once __DIR__ . '/../controllers/CanchaController.php';
-                (new CanchaController())->update($m[1]);
+                (new CanchaController())->actualizar($m[1]);
                 break;
 
             case (preg_match('/^canchas\/eliminar\/(\d+)$/', $path, $m) ? true : false):
                 require_once __DIR__ . '/../controllers/CanchaController.php';
-                (new CanchaController())->delete($m[1]);
+                (new CanchaController())->eliminar($m[1]);
                 break;
 
             // Error 404
