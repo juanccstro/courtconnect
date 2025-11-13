@@ -39,7 +39,7 @@ class AuthController {
                 header('Location: ' . BASE_URL);
                 exit;
             } else {
-                $error = 'Credenciales incorrectas.';
+                $error = 'Datos incorrectos.';
             }
         }
         require __DIR__ . '/../views/login.view.php';
@@ -74,6 +74,10 @@ class AuthController {
     }
 
     public function logout() {
-        Auth::logout();
+        session_start();
+        session_unset();
+        session_destroy();
+        header("Location: /login");
+        exit;
     }
 }

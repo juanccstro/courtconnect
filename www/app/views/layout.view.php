@@ -1,3 +1,9 @@
+<?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -12,13 +18,49 @@
 <body class="d-flex flex-column min-vh-100 bg-light">
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
     <div class="container">
-        <a class="navbar-brand mx-auto" href="/">
-            <img src="/img/logo.png" alt="CourtConnect" width="140">
-        </a>
+
+        <div class="row w-100 align-items-center">
+
+            <div class="col-4 d-flex justify-content-start">
+                <?php if (isset($_SESSION['usuario'])): ?>
+                    <ul class="navbar-nav">
+                        <li class="nav-item"><a class="nav-link" href="/canchas">Canchas</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/eventos">Eventos</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/destacados">Destacados</a></li>
+                    </ul>
+                <?php endif; ?>
+            </div>
+
+            <div class="col-4 d-flex justify-content-center">
+                <a class="navbar-brand text-center" href="/">
+                    <img src="/img/logo.png" alt="CourtConnect" width="140">
+                </a>
+            </div>
+
+            <div class="col-4 d-flex justify-content-end">
+                <ul class="navbar-nav">
+                    <?php if (!isset($_SESSION['usuario'])): ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/login" title="Iniciar sesión">
+                                <i class="bi bi-box-arrow-in-right fs-5"></i>
+                            </a>
+                        </li>
+                    <?php else: ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/logout" title="Cerrar sesión">
+                                <i class="bi bi-box-arrow-right fs-5"></i>
+                            </a>
+                        </li>
+                    <?php endif; ?>
+                </ul>
+            </div>
+
+        </div>
+
     </div>
 </nav>
 
-<main class="container py-4">
+<main class="container">
     <?= $content ?? '' ?>
 </main>
 

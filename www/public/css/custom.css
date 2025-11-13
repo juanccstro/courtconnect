@@ -10,8 +10,12 @@ body {
     font-family: "Inter", Arial, sans-serif;
     background-color: var(--cc-light);
     color: var(--cc-dark);
-    margin: 0;
-    padding: 0;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.sticky-top {
+    margin-bottom: 0 !important;
 }
 
 /* Botones */
@@ -47,6 +51,66 @@ body {
 
 .navbar-nav .nav-link:hover {
     color: var(--cc-secondary) !important;
+}
+
+/* Hero principal */
+.hero {
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    background: linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.55)),
+    url('/img/hero.jpg') center/cover no-repeat;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    margin-top: 0 !important;
+}
+
+.hero h1 {
+    font-size: 3.5rem;
+    letter-spacing: 1px;
+}
+
+.hero p {
+    font-size: 1.2rem;
+}
+
+.hero .btn {
+    font-weight: 600;
+}
+
+.cta-final {
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    background-color: var(--cc-dark);
+    padding: 4rem 0;
+}
+
+.container-fluid {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+/* Cards */
+.card {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.card-img-top {
+    width: 100%;
+    height: 320px;
+    object-fit: cover;
+    object-position: center;
+}
+.card-body {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.card-body .btn {
+    margin-top: auto;
 }
 
 /* Footer */
