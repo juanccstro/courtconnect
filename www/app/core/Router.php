@@ -68,6 +68,21 @@ class Router {
                 (new CanchaController())->eliminar($m[1]);
                 break;
 
+
+            case 'eventos':
+                require_once __DIR__ . '/../controllers/EventoController.php';
+                (new EventoController())->index();
+                break;
+
+            case (preg_match('#^eventos/([0-9]+)$#', $path, $matches) ? true : false):
+                require_once __DIR__ . '/../controllers/EventoController.php';
+                (new EventoController())->show($matches[1]);
+                break;
+
+            case 'eventos/crear':
+                echo "Página de creación de eventos (en construcción)";
+                break;
+
             // Error 404
             default:
                 http_response_code(404);
