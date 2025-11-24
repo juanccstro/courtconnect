@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . '/../../config/db.php';
+require_once __DIR__ . '/../core/Database.php';
 
 class Cancha
 {
@@ -8,7 +8,7 @@ class Cancha
 
     public function __construct()
     {
-        $this->conn = Database::connect();
+        $this->conn = Database::getConnection();
     }
 
     public function getAll()

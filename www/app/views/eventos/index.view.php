@@ -30,7 +30,7 @@
                                  class="card-img-top"
                                  alt="<?= htmlspecialchars($e['titulo']) ?>">
                         <?php else: ?>
-                            <img src="/img/no-image.png" class="card-img-top">
+                            <img src="/img/no-img.png" class="card-img-top">
                         <?php endif; ?>
 
                         <p class="text-muted mb-1 mt-2">

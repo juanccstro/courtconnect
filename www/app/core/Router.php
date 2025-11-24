@@ -1,93 +1,135 @@
 <?php
+
 require_once __DIR__ . '/../../config/config.php';
+require_once __DIR__ . '/../../app/controllers/ErrorController.php';
+require_once __DIR__ . '/../../app/controllers/EventoController.php';
+require_once __DIR__ . '/../../app/controllers/HomeController.php';
+require_once __DIR__ . '/../../app/controllers/CanchaController.php';
+require_once __DIR__ . '/../../app/controllers/AuthController.php';
+require_once __DIR__ . '/../libraries/simplePHPRouter/src/Steampixel/Route.php';
+use Steampixel\Route;
 
-class Router {
-    public static function route($uri) {
-        $path = trim(parse_url($uri, PHP_URL_PATH), '/');
+class Router
+{
+    public static function route($uri)
+    {
 
-        switch ($path) {
-            case '':
-                require_once __DIR__ . '/../controllers/HomeController.php';
-                (new HomeController())->index();
-                break;
+        // Rutas públicas
+        Route::add('/', function () {
+            $controller = new HomeController();
+            $controller->index();
+        }, 'get');
 
-            case 'login':
-                require_once __DIR__ . '/../controllers/AuthController.php';
+        // Login y registro
+        if (!isset($_SESSION['usuario'])) {
+
+            Route::add('/login', function () {
                 $controller = new AuthController();
-                $_SERVER['REQUEST_METHOD'] === 'POST'
-                    ? $controller->login()
-                    : $controller->showLogin();
-                break;
+                $_SERVER['REQUEST_METHOD'] === 'POST' ? $controller->login() : $controller->showLogin();
+            }, ['get', 'post']);
 
-            case 'register':
-                require_once __DIR__ . '/../controllers/AuthController.php';
+            Route::add('/register', function () {
                 $controller = new AuthController();
-                $_SERVER['REQUEST_METHOD'] === 'POST'
-                    ? $controller->register()
-                    : $controller->showRegister();
-                break;
+                $_SERVER['REQUEST_METHOD'] === 'POST' ? $controller->register() : $controller->showRegister();
+            }, ['get', 'post']);
 
-            case 'logout':
-                require_once __DIR__ . '/../controllers/AuthController.php';
-                (new AuthController())->logout();
-                break;
-
-            // Rutas de canchas
-            case 'canchas':
-                require_once __DIR__ . '/../controllers/CanchaController.php';
-                (new CanchaController())->index();
-                break;
-
-            case (preg_match('/^canchas\/(\d+)$/', $path, $m) ? true : false):
-                require_once __DIR__ . '/../controllers/CanchaController.php';
-                (new CanchaController())->show($m[1]);
-                break;
-
-            case 'canchas/crear':
-                require_once __DIR__ . '/../controllers/CanchaController.php';
-                (new CanchaController())->crear();
-                break;
-
-            case 'canchas/guardar':
-                require_once __DIR__ . '/../controllers/CanchaController.php';
-                (new CanchaController())->guardar();
-                break;
-
-            case (preg_match('/^canchas\/editar\/(\d+)$/', $path, $m) ? true : false):
-                require_once __DIR__ . '/../controllers/CanchaController.php';
-                (new CanchaController())->editar($m[1]);
-                break;
-
-            case (preg_match('/^canchas\/actualizar\/(\d+)$/', $path, $m) ? true : false):
-                require_once __DIR__ . '/../controllers/CanchaController.php';
-                (new CanchaController())->actualizar($m[1]);
-                break;
-
-            case (preg_match('/^canchas\/eliminar\/(\d+)$/', $path, $m) ? true : false):
-                require_once __DIR__ . '/../controllers/CanchaController.php';
-                (new CanchaController())->eliminar($m[1]);
-                break;
-
-
-            case 'eventos':
-                require_once __DIR__ . '/../controllers/EventoController.php';
-                (new EventoController())->index();
-                break;
-
-            case (preg_match('#^eventos/([0-9]+)$#', $path, $matches) ? true : false):
-                require_once __DIR__ . '/../controllers/EventoController.php';
-                (new EventoController())->show($matches[1]);
-                break;
-
-            case 'eventos/crear':
-                echo "Página de creación de eventos (en construcción)";
-                break;
-
-            // Error 404
-            default:
-                http_response_code(404);
-                require __DIR__ . '/../views/error404.view.php';
-                break;
         }
+
+        // Rutas para usuarios logueados
+        if (isset($_SESSION['usuario'])) {
+
+            // Ruta de canchas
+            Route::add('/canchas', function () {
+                $controller = new CanchaController();
+                $controller->index();
+            }, 'get');
+
+            Route::add('/canchas/([0-9]+)', function ($id) {
+                $controller = new CanchaController();
+                $controller->show($id);
+            }, 'get');
+
+            Route::add('/canchas/crear', function () {
+                $controller = new CanchaController();
+                $controller->crear();
+            }, 'get');
+
+            Route::add('/canchas/guardar', function () {
+                $controller = new CanchaController();
+                $controller->guardar();
+            }, 'post');
+
+            Route::add('/canchas/editar/([0-9]+)', function ($id) {
+                $controller = new CanchaController();
+                $controller->editar($id);
+            }, 'get');
+
+            Route::add('/canchas/actualizar/([0-9]+)', function ($id) {
+                $controller = new CanchaController();
+                $controller->actualizar($id);
+            }, 'post');
+
+            Route::add('/canchas/eliminar/([0-9]+)', function ($id) {
+                $controller = new CanchaController();
+                $controller->eliminar($id);
+            }, 'get');
+
+            // Rutas de eventos
+            Route::add('/eventos', function () {
+                $controller = new EventoController();
+                $controller->index();
+            }, 'get');
+
+            Route::add('/eventos/([0-9]+)', function ($id) {
+                $controller = new EventoController();
+                $controller->show($id);
+            }, 'get');
+
+            Route::add('/eventos/crear', function () {
+                $controller = new EventoController();
+                $controller->crear();
+            }, 'get');
+
+            Route::add('/eventos/guardar', function () {
+                $controller = new EventoController();
+                $controller->guardar();
+            }, 'post');
+
+            Route::add('/eventos/editar/([0-9]+)', function ($id) {
+                $controller = new EventoController();
+                $controller->editar($id);
+            }, 'get');
+
+            Route::add('/eventos/actualizar/([0-9]+)', function ($id) {
+                $controller = new EventoController();
+                $controller->actualizar($id);
+            }, 'post');
+
+            Route::add('/eventos/eliminar/([0-9]+)', function ($id) {
+                $controller = new EventoController();
+                $controller->eliminar($id);
+            }, 'get');
+        }
+
+        // Logout
+        Route::add('/logout', function () {
+            session_destroy();
+            header('Location: /');
+            exit;
+        }, 'get');
+
+        // Ruta error (404)
+        Route::pathNotFound(function () {
+            $controller = new ErrorController();
+            $controller->error404();
+        });
+
+        // Método no permitido (405)
+        Route::methodNotAllowed(function () {
+            $controller = new ErrorController();
+            $controller->error405();
+        });
+
+        Route::run();
     }
 }
