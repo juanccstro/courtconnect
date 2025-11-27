@@ -6,6 +6,8 @@ require_once __DIR__ . '/../../app/controllers/EventoController.php';
 require_once __DIR__ . '/../../app/controllers/HomeController.php';
 require_once __DIR__ . '/../../app/controllers/CanchaController.php';
 require_once __DIR__ . '/../../app/controllers/AuthController.php';
+require_once __DIR__ . '/../../app/controllers/DestacadosController.php';
+require_once __DIR__ . '/../../app/controllers/ParticipacionController.php';
 require_once __DIR__ . '/../libraries/simplePHPRouter/src/Steampixel/Route.php';
 use Steampixel\Route;
 
@@ -105,9 +107,32 @@ class Router
                 $controller->actualizar($id);
             }, 'post');
 
+            Route::add('/eventos/inscribir/([0-9]+)', function($id) {
+                $controller = new EventoController();
+                $controller->inscribir($id);
+            }, 'post');
+
             Route::add('/eventos/eliminar/([0-9]+)', function ($id) {
                 $controller = new EventoController();
                 $controller->eliminar($id);
+            }, 'get');
+
+            // Rutas de jugadores destacados
+            // Jugadores destacados
+            Route::add('/destacados', function () {
+                (new DestacadosController())->index();
+            }, 'get');
+
+            Route::add('/destacados/crear', function () {
+                (new DestacadosController())->crear();
+            }, 'get');
+
+            Route::add('/destacados/guardar', function () {
+                (new DestacadosController())->guardar();
+            }, 'post');
+
+            Route::add('/destacados/eliminar/([0-9]+)', function ($id) {
+                (new DestacadosController())->eliminar($id);
             }, 'get');
         }
 

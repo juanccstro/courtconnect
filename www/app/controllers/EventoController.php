@@ -20,11 +20,18 @@ class EventoController
 
     public function show($id)
     {
-        $evento = $this->model->obtenerPorId($id);
+        require_once __DIR__ . '/../models/Evento.php';
+        require_once __DIR__ . '/../models/Cancha.php';
+        require_once __DIR__ . '/../models/Participacion.php';
+
+        $eventoModel = new Evento();
+        $participacionModel = new Participacion();
+
+        $evento = $eventoModel->obtenerPorId($id);
+        $participantes = $participacionModel->getByEvento($id);
 
         if (!$evento) {
-            http_response_code(404);
-            require __DIR__ . '/../views/errors/404.view.php';
+            (new ErrorController())->error404();
             return;
         }
 
@@ -185,7 +192,33 @@ class EventoController
         exit;
     }
 
+    public function inscribir($id)
+    {
+        if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['rol'] !== 'jugador') {
+            header("Location: /login");
+            exit;
+        }
 
+        $usuarioId = $_SESSION['usuario']['id'];
+        $posicion = $_POST['posicion'];
+        $edad = $_POST['edad'];
 
+        require_once __DIR__ . '/../models/Participacion.php';
+        $participacionModel = new Participacion();
+
+        // Evitar que el usuario se inscriba dos veces
+        if ($participacionModel->yaInscrito($id, $usuarioId)) {
+            $_SESSION['error'] = "Ya estás inscrito en este evento.";
+            header("Location: /eventos/$id");
+            exit;
+        }
+
+        // Insertar inscripción
+        $participacionModel->inscribir($id, $usuarioId, $posicion, $edad);
+
+        $_SESSION['success'] = "Inscripción realizada correctamente.";
+        header("Location: /eventos/$id");
+        exit;
+    }
 
 }

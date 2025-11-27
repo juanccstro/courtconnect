@@ -33,13 +33,7 @@
 
             <div class="col-4 d-flex justify-content-end">
                 <ul class="navbar-nav">
-                    <?php if (!isset($_SESSION['usuario'])): ?>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/login" title="Iniciar sesión">
-                                <i class="bi bi-box-arrow-in-right fs-5"></i>
-                            </a>
-                        </li>
-                    <?php else: ?>
+                    <?php if (isset($_SESSION['usuario'])): ?>
                         <li class="nav-item">
                             <a class="nav-link" href="/logout" title="Cerrar sesión">
                                 <i class="bi bi-box-arrow-right fs-5"></i>

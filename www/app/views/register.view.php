@@ -21,5 +21,6 @@
         </div>
         <button type="submit" class="btn btn-primary w-100">Registrarse</button>
     </form>
+    <p class="text-center mt-3">Ya tengo una cuenta <a href="/login">Iniciar sesión</a></p>
 </div>
 <?php $content = ob_get_clean(); require __DIR__ . '/layout.view.php'; ?>
