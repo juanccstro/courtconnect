@@ -1,6 +1,6 @@
 <?php ob_start(); ?>
 
-<h2 class="text-center mb-4 mt-4 fw-bold text-primary">Canchas disponibles</h2>
+<h2 class="text-center mb-4 mt-5 fw-bold text-primary">Canchas disponibles</h2>
 
 <div class="d-flex justify-content-end mb-3">
     <?php if (!empty($_SESSION['usuario']) && $_SESSION['usuario']['rol'] === 'admin'): ?>
@@ -27,16 +27,16 @@
                     <div class="card-body d-flex flex-column">
                         <h5 class="card-title fw-bold"><?= htmlspecialchars($c['nombre']) ?></h5>
 
-                        <p class="text-muted mb-1">
+                        <p class=" mb-1">
                             <i class="bi bi-geo-alt"></i> <?= htmlspecialchars($c['ubicacion']) ?>
                         </p>
 
-                        <p class="text-muted mb-2">
+                        <p class=" mb-2">
                             <i class="bi bi-grid-3x3-gap-fill"></i>
                             Tipo: <?= htmlspecialchars($c['tipo']) ?>
                         </p>
 
-                        <p class="text-muted">
+                        <p class="">
                             <i class="bi bi-check-circle"></i>
                             Estado: <?= htmlspecialchars($c['estado']) ?>
                         </p>

@@ -1,6 +1,6 @@
 <?php ob_start(); ?>
 
-<h2 class="fw-bold text-primary mb-4 mt-4">Crear nuevo evento</h2>
+<h2 class="text-center my-4 fw-bold text-primary mt-5">Crear nuevo evento</h2>
 
 <?php if (!empty($error)): ?>
     <div class="alert alert-danger"><?= $error ?></div>

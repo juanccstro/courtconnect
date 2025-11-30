@@ -1,6 +1,6 @@
 <?php ob_start(); ?>
 
-    <h2 class="text-center my-4 fw-bold text-primary">Jugadores Destacados</h2>
+    <h2 class="text-center my-4 mt-5 fw-bold text-primary">Jugadores Destacados</h2>
 
     <div class="d-flex justify-content-end mb-3">
         <?php if ($_SESSION['usuario']['rol'] === 'admin'): ?>
@@ -22,10 +22,10 @@
                     <div class="card-body d-flex flex-column flex-grow-1">
                         <h5 class="fw-bold"><?= htmlspecialchars($j['nombre']) ?></h5>
 
-                        <p class="text-muted"><?= htmlspecialchars($j['descripcion']) ?></p>
+                        <p class=""><?= htmlspecialchars($j['descripcion']) ?></p>
 
                     <div class="badge-mvp mb-2 text-center">
-                        <i class="bi bi-star-fill me-1"></i>
+                        <i class="bi bi-star me-1"></i>
                         <?= $j['mvp_count'] ?> veces MVP
                     </div>
 

@@ -1,6 +1,6 @@
 <?php ob_start(); ?>
 
-<h2 class="fw-bold text-primary mb-4 mt-4">Editar evento</h2>
+<h2 class="fw-bold text-primary mb-4 mt-5">Editar evento</h2>
 
 <?php if (!empty($error)): ?>
     <div class="alert alert-danger"><?= $error ?></div>

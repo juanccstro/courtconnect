@@ -1,6 +1,6 @@
 <?php ob_start(); ?>
 
-<div class="row mt-4">
+<div class="row mt-5">
 
     <div class="col-md-6">
         <?php if (!empty($cancha['imagen'])): ?>

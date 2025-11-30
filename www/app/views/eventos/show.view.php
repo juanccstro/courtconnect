@@ -1,6 +1,6 @@
 <?php ob_start(); ?>
 
-<div class="container mt-4">
+<div class="container mt-5">
 
     <div class="row g-4">
 
@@ -123,41 +123,63 @@
     <?php endif; ?>
 
     <!-- Participantes -->
-    <div class="row mt-5">
-        <div class="col-12">
-            <h3 class="fw-bold text-primary">Participantes</h3>
+    <div class="mt-5">
 
-            <?php if (empty($participantes)): ?>
-                <p class="text-muted">Aún no hay participantes registrados.</p>
+        <h3 class="fw-bold text-primary mb-4">Participantes</h3>
 
-            <?php else: ?>
-                <div class="table-responsive">
-                    <table class="table table-striped table-bordered text-center">
-                        <thead class="table-dark">
-                        <tr>
-                            <th>Jugador</th>
-                            <th>Posición</th>
-                            <th>Edad</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <?php foreach ($participantes as $p): ?>
-                            <tr>
-                                <td><?= htmlspecialchars($p['usuario_nombre']) ?></td>
-                                <td><?= htmlspecialchars($p['posicion']) ?></td>
-                                <td><?= htmlspecialchars($p['edad']) ?></td>
-                            </tr>
-                        <?php endforeach; ?>
-                        </tbody>
-                    </table>
-                </div>
-            <?php endif; ?>
+        <!-- Filtros -->
+        <div class="row g-3 mb-3 participant-filters">
+            <div class="col-md-4">
+                <input type="text" id="filterNombre" class="form-control" placeholder="Buscar por nombre...">
+            </div>
+
+            <div class="col-md-4">
+                <select id="filterPosicion" class="form-select">
+                    <option value="">Todas las posiciones</option>
+                    <option>Base</option>
+                    <option>Escolta</option>
+                    <option>Alero</option>
+                    <option>Ala-Pívot</option>
+                    <option>Pívot</option>
+                </select>
+            </div>
+
+            <div class="col-md-4">
+                <input type="number" id="filterEdad" class="form-control" placeholder="Edad mínima">
+            </div>
         </div>
+
+        <?php if (empty($participantes)): ?>
+            <p class="">Aún no hay participantes registrados.</p>
+        <?php else: ?>
+
+            <div class="table-responsive">
+                <table class="table table-2k table-hover" id="tablaParticipantes">
+                    <thead>
+                    <tr>
+                        <th data-col="nombre" class="sortable">Jugador <i class="bi bi-arrow-down-up"></i></th>
+                        <th data-col="posicion" class="sortable">Posición <i class="bi bi-arrow-down-up"></i></th>
+                        <th data-col="edad" class="sortable">Edad <i class="bi bi-arrow-down-up"></i></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <?php foreach ($participantes as $p): ?>
+                        <tr>
+                            <td><?= htmlspecialchars($p['usuario_nombre']) ?></td>
+                            <td><?= htmlspecialchars($p['posicion']) ?></td>
+                            <td><?= htmlspecialchars($p['edad']) ?></td>
+                        </tr>
+                    <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+
+        <?php endif; ?>
     </div>
 
-</div>
-
-<?php
+    <?php
 $content = ob_get_clean();
 require __DIR__ . '/../layout.view.php';
 ?>
+
+    <script src="/js/eventos.js"></script>

@@ -1,8 +1,8 @@
 <?php ob_start(); ?>
 
-<h2 class="text-center my-4 fw-bold text-primary">Añadir Jugador Destacado</h2>
+<h2 class="text-center my-4 fw-bold text-primary mt-5">Añadir Jugador Destacado</h2>
 
-<form method="POST" action="/destacados/guardar" enctype="multipart/form-data" class="card p-4 shadow">
+<form method="POST" action="/destacados/guardar" enctype="multipart/form-data" class="row g-3">
 
     <div class="mb-3">
         <label class="form-label">Nombre del jugador</label>
@@ -24,7 +24,10 @@
         <input type="file" name="imagen" class="form-control" accept="image/*" required>
     </div>
 
-    <button type="submit" class="btn btn-primary">Guardar</button>
+    <div class="col-12">
+        <button class="btn btn-primary">Añadir jugador</button>
+        <a href="/destacados" class="btn btn-secondary">Cancelar</a>
+    </div>
 
 </form>
 

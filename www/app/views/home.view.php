@@ -12,9 +12,9 @@
 </section>
 
 <!-- Sección de eventos -->
-<section class="py-5 bg-light">
+<section class="py-5 mt-5">
     <div class="container">
-        <h2 class="text-center mb-4 fw-bold text-primary">Próximos eventos</h2>
+        <h2 class="text-center mb-4 fw-bold text-light">Próximos eventos</h2>
         <div class="row justify-content-center">
             <div class="col-md-5 mb-4">
                 <div class="card shadow-sm border-0">
@@ -43,7 +43,7 @@
 <!-- Sección de canchas -->
 <section class="py-5">
     <div class="container">
-        <h2 class="text-center mb-4 fw-bold text-primary">Canchas destacadas</h2>
+        <h2 class="text-center mb-4 fw-bold text-light">Canchas destacadas</h2>
         <div class="row justify-content-center">
             <div class="col-md-5 mb-4">
                 <div class="card shadow-sm border-0">

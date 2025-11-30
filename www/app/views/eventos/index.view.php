@@ -1,6 +1,6 @@
 <?php ob_start(); ?>
 
-<h2 class="fw-bold text-primary mt-4 mb-4 text-center">Próximos eventos</h2>
+<h2 class="fw-bold text-primary mt-5 mb-4 text-center">Próximos eventos</h2>
 
 <div class="d-flex justify-content-end mb-3">
     <?php if (!empty($_SESSION['usuario']) && $_SESSION['usuario']['rol'] === 'admin'): ?>
@@ -33,17 +33,17 @@
                             <img src="/img/no-img.png" class="card-img-top">
                         <?php endif; ?>
 
-                        <p class="text-muted mb-1 mt-2">
+                        <p class=" mb-1 mt-2">
                             <i class="bi bi-calendar-event"></i>
                             <?= date("d/m/Y H:i", strtotime($e['fecha'])) ?>
                         </p>
 
-                        <p class="text-muted mb-1">
+                        <p class=" mb-1">
                             <i class="bi bi-geo-alt"></i>
                             <?= htmlspecialchars($e['cancha_nombre']) ?>
                         </p>
 
-                        <p class="text-muted">
+                        <p class="">
                             <i class="bi bi-people"></i>
                             <?= htmlspecialchars($e['plazas']) ?> plazas
                         </p>
