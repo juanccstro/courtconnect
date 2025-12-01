@@ -1,32 +1,74 @@
 <?php
-class Usuario {
-    private $db;
 
-    public function __construct($db) {
-        $this->db = $db;
-    }
+require_once __DIR__ . '/BaseModel.php';
 
-    public function registrar($nombre, $email, $password, $rol) {
+class Usuario extends BaseModel
+{
+    /**
+     * Registrar usuario nuevo
+     */
+    public function registrar($nombre, $email, $password, $rol)
+    {
         $hash = password_hash($password, PASSWORD_DEFAULT);
-        $sql = "INSERT INTO usuarios (nombre, email, password, rol) VALUES (?, ?, ?, ?)";
-        $stmt = $this->db->prepare($sql);
-        return $stmt->execute([$nombre, $email, $hash, $rol]);
+
+        $sql = "
+            INSERT INTO usuarios (nombre, email, password, rol)
+            VALUES (:nombre, :email, :password, :rol)
+        ";
+
+        return $this->run($sql, [
+            ':nombre'   => $nombre,
+            ':email'    => $email,
+            ':password' => $hash,
+            ':rol'      => $rol
+        ]);
     }
 
-    public function login($email, $password) {
-        $sql = "SELECT * FROM usuarios WHERE email = ?";
-        $stmt = $this->db->prepare($sql);
-        $stmt->execute([$email]);
-        $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
+    /**
+     * Obtener usuario por email
+     */
+    public function obtenerPorEmail($email)
+    {
+        $sql = "SELECT * FROM usuarios WHERE email = :email";
 
-        if ($usuario && password_verify($password, $usuario['password'])) {
-            $_SESSION['usuario'] = [
-                'id' => $usuario['id'],
-                'nombre' => $usuario['nombre'],
-                'rol' => $usuario['rol']
-            ];
-            return true;
+        return $this->run($sql, [
+            ':email' => $email
+        ])->fetch(PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * Login de usuario
+     */
+    public function login($email, $password)
+    {
+        $usuario = $this->obtenerPorEmail($email);
+
+        if (!$usuario) {
+            return false;
         }
-        return false;
+
+        if (!password_verify($password, $usuario['password'])) {
+            return false;
+        }
+
+        $_SESSION['usuario'] = [
+            'id'     => $usuario['id'],
+            'nombre' => $usuario['nombre'],
+            'rol'    => $usuario['rol']
+        ];
+
+        return true;
+    }
+
+    /**
+     * Obtener usuario por id
+     */
+    public function obtenerPorId($id)
+    {
+        $sql = "SELECT * FROM usuarios WHERE id = :id";
+
+        return $this->run($sql, [
+            ':id' => $id
+        ])->fetch(PDO::FETCH_ASSOC);
     }
 }

@@ -1,6 +1,6 @@
 <?php ob_start(); ?>
 
-<h2 class="text-center mb-4 mt-5 fw-bold text-primary">Canchas disponibles</h2>
+<h2 class="text-center mb-4 mt-5 fw-bold text-light">Canchas disponibles</h2>
 
 <div class="d-flex justify-content-end mb-3">
     <?php if (!empty($_SESSION['usuario']) && $_SESSION['usuario']['rol'] === 'admin'): ?>
@@ -11,7 +11,7 @@
 <div class="row">
 
     <?php if (empty($canchas)): ?>
-        <p class="text-center text-muted">No hay canchas registradas.</p>
+        <p class="text-center">No hay canchas registradas.</p>
     <?php else: ?>
         <?php foreach ($canchas as $c): ?>
             <div class="col-md-4 mb-4">
@@ -45,15 +45,6 @@
                             Ver detalles
                         </a>
 
-                        <?php if (!empty($_SESSION['usuario']) && $_SESSION['usuario']['rol'] === 'admin'): ?>
-                            <div class="mt-3 d-flex gap-2">
-                                <a href="/canchas/editar/<?= $c['id'] ?>" class="btn btn-warning w-50">Editar</a>
-                                <a href="/canchas/eliminar/<?= $c['id'] ?>" class="btn btn-danger w-50"
-                                   onclick="return confirm('¿Eliminar esta cancha?');">
-                                    Eliminar
-                                </a>
-                            </div>
-                        <?php endif; ?>
                     </div>
 
                 </div>

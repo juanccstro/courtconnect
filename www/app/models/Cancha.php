@@ -1,67 +1,58 @@
 <?php
 
-require_once __DIR__ . '/../core/Database.php';
+require_once __DIR__ . '/BaseModel.php';
 
-class Cancha
+class Cancha extends BaseModel
 {
-    private $conn;
-
-    public function __construct()
-    {
-        $this->conn = Database::getConnection();
-    }
-
     public function getAll()
     {
         $sql = "SELECT * FROM canchas ORDER BY id DESC";
-        $stmt = $this->conn->query($sql);
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $this->run($sql)->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function getById($id)
     {
-        $sql = "SELECT * FROM canchas WHERE id = ?";
-        $stmt = $this->conn->prepare($sql);
-        $stmt->execute([$id]);
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+        $sql = "SELECT * FROM canchas WHERE id = :id";
+        return $this->run($sql, [':id' => $id])->fetch(PDO::FETCH_ASSOC);
     }
 
     public function crear($data)
     {
         $sql = "INSERT INTO canchas (nombre, ubicacion, imagen, tipo, estado)
-                VALUES (?, ?, ?, ?, ?)";
+                VALUES (:nombre, :ubicacion, :imagen, :tipo, :estado)";
 
-        $stmt = $this->conn->prepare($sql);
-        return $stmt->execute([
-            $data['nombre'],
-            $data['ubicacion'],
-            $data['imagen'],
-            $data['tipo'],
-            $data['estado']
+        return $this->run($sql, [
+            ':nombre'    => $data['nombre'],
+            ':ubicacion' => $data['ubicacion'],
+            ':imagen'    => $data['imagen'],
+            ':tipo'      => $data['tipo'],
+            ':estado'    => $data['estado']
         ]);
     }
 
     public function update($id, $data)
     {
-        $sql = "UPDATE canchas 
-                SET nombre = ?, ubicacion = ?, imagen = ?, tipo = ?, estado = ?
-                WHERE id = ?";
+        $sql = "UPDATE canchas
+                SET nombre = :nombre,
+                    ubicacion = :ubicacion,
+                    imagen = :imagen,
+                    tipo = :tipo,
+                    estado = :estado
+                WHERE id = :id";
 
-        $stmt = $this->conn->prepare($sql);
-        return $stmt->execute([
-            $data['nombre'],
-            $data['ubicacion'],
-            $data['imagen'],
-            $data['tipo'],
-            $data['estado'],
-            $id
+        return $this->run($sql, [
+            ':id'        => $id,
+            ':nombre'    => $data['nombre'],
+            ':ubicacion' => $data['ubicacion'],
+            ':imagen'    => $data['imagen'],
+            ':tipo'      => $data['tipo'],
+            ':estado'    => $data['estado']
         ]);
     }
 
     public function delete($id)
     {
-        $sql = "DELETE FROM canchas WHERE id = ?";
-        $stmt = $this->conn->prepare($sql);
-        return $stmt->execute([$id]);
+        $sql = "DELETE FROM canchas WHERE id = :id";
+        return $this->run($sql, [':id' => $id]);
     }
 }

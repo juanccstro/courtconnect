@@ -1,41 +1,34 @@
 <?php
 
-require_once __DIR__ . '/../core/Database.php';
+require_once __DIR__ . '/BaseModel.php';
 
-class JugadorDestacado
+class JugadorDestacado extends BaseModel
 {
-    private $db;
-
-    public function __construct()
-    {
-        $this->db = Database::getConnection();
-    }
-
     public function obtenerTodos()
     {
-        $stmt = $this->db->query("SELECT * FROM jugadores_destacados ORDER BY mvp_count DESC");
-        return $stmt->fetchAll();
-    }
+        $sql = "SELECT * 
+                FROM jugadores_destacados 
+                ORDER BY mvp_count DESC";
 
-    public function obtenerPorId($id)
-    {
-        $stmt = $this->db->prepare("SELECT * FROM jugadores_destacados WHERE id = ?");
-        $stmt->execute([$id]);
-        return $stmt->fetch();
+        return $this->run($sql)->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function crear($nombre, $descripcion, $imagen, $mvp)
     {
-        $stmt = $this->db->prepare(
-            "INSERT INTO jugadores_destacados (nombre, descripcion, imagen, mvp_count)
-             VALUES (?, ?, ?, ?)"
-        );
-        return $stmt->execute([$nombre, $descripcion, $imagen, $mvp]);
+        $sql = "INSERT INTO jugadores_destacados (nombre, descripcion, imagen, mvp_count)
+                VALUES (:nombre, :descripcion, :imagen, :mvp)";
+
+        return $this->run($sql, [
+            ':nombre'      => $nombre,
+            ':descripcion' => $descripcion,
+            ':imagen'      => $imagen,
+            ':mvp'         => $mvp
+        ]);
     }
 
     public function eliminar($id)
     {
-        $stmt = $this->db->prepare("DELETE FROM jugadores_destacados WHERE id = ?");
-        return $stmt->execute([$id]);
+        $sql = "DELETE FROM jugadores_destacados WHERE id = :id";
+        return $this->run($sql, [':id' => $id]);
     }
 }

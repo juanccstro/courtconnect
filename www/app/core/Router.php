@@ -118,7 +118,6 @@ class Router
             }, 'get');
 
             // Rutas de jugadores destacados
-            // Jugadores destacados
             Route::add('/destacados', function () {
                 (new DestacadosController())->index();
             }, 'get');

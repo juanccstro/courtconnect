@@ -1,6 +1,6 @@
 <?php ob_start(); ?>
 
-    <h2 class="text-center my-4 mt-5 fw-bold text-primary">Jugadores Destacados</h2>
+    <h2 class="text-center my-4 mt-5 fw-bold text-light">Jugadores Destacados</h2>
 
     <div class="d-flex justify-content-end mb-3">
         <?php if ($_SESSION['usuario']['rol'] === 'admin'): ?>

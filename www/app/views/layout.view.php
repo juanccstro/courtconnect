@@ -10,38 +10,50 @@
     <link rel="stylesheet" href="/css/custom.css">
 </head>
 <body class="d-flex flex-column min-vh-100">
+
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
-    <div class="container">
+    <div class="container d-flex align-items-center">
 
-        <div class="row w-100 align-items-center">
+        <!-- Logo móvil -->
+        <a class="navbar-brand d-lg-none" href="/">
+            <img src="/img/logo.png" alt="CourtConnect" width="120">
+        </a>
 
-            <div class="col-4 d-flex justify-content-start">
+        <!-- Botón hamburguesa -->
+        <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarCC" aria-controls="navbarCC"
+                aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Contenido -->
+        <div class="collapse navbar-collapse justify-content-between" id="navbarCC">
+
+            <!-- Bloque izquierdo -->
+            <ul class="navbar-nav me-auto align-items-lg-center flex-lg-1">
                 <?php if (isset($_SESSION['usuario'])): ?>
-                    <ul class="navbar-nav">
-                        <li class="nav-item"><a class="nav-link" href="/canchas">Canchas</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/eventos">Eventos</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/destacados">Destacados</a></li>
-                    </ul>
+                    <li class="nav-item"><a class="nav-link" href="/canchas">Canchas</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/eventos">Eventos</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/destacados">Destacados</a></li>
                 <?php endif; ?>
-            </div>
+            </ul>
 
-            <div class="col-4 d-flex justify-content-center">
-                <a class="navbar-brand text-center" href="/">
-                    <img src="/img/logo.png" alt="CourtConnect" width="140">
-                </a>
-            </div>
+            <!-- Logo centro -->
+            <a class="navbar-brand d-none d-lg-block" href="/">
+                <img src="/img/logo.png" alt="CourtConnect" width="150">
+            </a>
 
-            <div class="col-4 d-flex justify-content-end">
-                <ul class="navbar-nav">
-                    <?php if (isset($_SESSION['usuario'])): ?>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/logout" title="Cerrar sesión">
-                                <i class="bi bi-box-arrow-right fs-5"></i>
-                            </a>
-                        </li>
-                    <?php endif; ?>
-                </ul>
-            </div>
+            <!-- Bloque derecho -->
+            <ul class="navbar-nav ms-auto align-items-lg-center flex-lg-1 justify-content-lg-end">
+                <?php if (isset($_SESSION['usuario'])): ?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/logout" aria-label="Cerrar sesión">
+                            <i class="bi bi-box-arrow-right fs-5"></i>
+                            <span class="d-lg-none"> Cerrar sesión</span>
+                        </a>
+                    </li>
+                <?php endif; ?>
+            </ul>
 
         </div>
 

@@ -20,7 +20,7 @@ body::before {
     content: "";
     position: fixed;
     inset: 0;
-    background: url('/img/fondo.jpg') center/cover no-repeat;
+    background: url('/img/fondo-2k.png') center/cover no-repeat;
     z-index: -1;
     filter: blur(0px);
 }
@@ -30,7 +30,7 @@ body::after {
     position: fixed;
     inset: 0;
     background: rgba(0,0,0,0.72);
-    backdrop-filter: blur(3px);
+    backdrop-filter: blur(2px);
     z-index: -1;
 }
 
@@ -80,8 +80,20 @@ body::after {
     color: #fff;
 }
 
-/* Navbar */
+/* Menú hamburguesa */
+.navbar-collapse {
+    border-radius: 12px;
+}
 
+/* Ajustes del nav en móvil y tablet */
+@media (max-width: 991px) {
+    .navbar-nav .nav-link {
+        padding: 0.6rem 0;
+        font-size: 1.1rem;
+    }
+}
+
+/* Navbar */
 .navbar.bg-dark {
     background: rgba(10, 10, 10, 0.95) !important;
     backdrop-filter: blur(12px);
@@ -97,6 +109,16 @@ body::after {
 
 .navbar-nav .nav-link:hover {
     color: var(--cc-secondary) !important;
+}
+
+/* Logo desktop */
+.flex-lg-1 {
+    flex: 1 !important;
+}
+
+.navbar-brand.mx-lg-auto {
+    margin-left: auto !important;
+    margin-right: auto !important;
 }
 
 /* Hero */

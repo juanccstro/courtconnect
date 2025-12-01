@@ -1,6 +1,6 @@
 <?php ob_start(); ?>
 
-<h2 class="fw-bold text-primary mt-5 mb-4 text-center">Próximos eventos</h2>
+<h2 class="fw-bold text-light mt-5 mb-4 text-center">Próximos eventos</h2>
 
 <div class="d-flex justify-content-end mb-3">
     <?php if (!empty($_SESSION['usuario']) && $_SESSION['usuario']['rol'] === 'admin'): ?>
@@ -17,7 +17,7 @@
     <div class="row">
 
         <?php foreach ($eventos as $e): ?>
-            <div class="col-md-4 mb-4">
+            <div class="col-md-6 mb-4">
 
                 <div class="card shadow-sm h-100">
 
