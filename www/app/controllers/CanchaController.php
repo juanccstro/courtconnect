@@ -1,14 +1,19 @@
 <?php
 
 require_once __DIR__ . '/../models/Cancha.php';
+require_once __DIR__ . '/../models/Evento.php';
 
 class CanchaController
 {
+
+    private $canchaModel;
+    private $eventoModel;
     private $model;
 
     public function __construct()
     {
         $this->model = new Cancha();
+        $this->eventoModel = new Evento();
     }
 
     public function index()
@@ -159,30 +164,31 @@ class CanchaController
 
     public function eliminar($id)
     {
-        if ($_SESSION['usuario']['rol'] !== 'admin') {
-            header("Location: /canchas");
+        if (empty($_SESSION['usuario']) || $_SESSION['usuario']['rol'] !== 'admin') {
+            $_SESSION['flash'] = [
+                'type' => 'error',
+                'message' => 'No tienes permisos para eliminar canchas.'
+            ];
+            header('Location: /canchas');
             exit;
         }
 
-        $cancha = $this->model->getById($id);
-
-        if (!$cancha) {
-            http_response_code(404);
-            require __DIR__ . '/../views/errors/404.view.php';
-            return;
-        }
-
-        // Borrar imagen
-        if (!empty($cancha['imagen'])) {
-            $ruta = __DIR__ . '/../../public/uploads/canchas/' . $cancha['imagen'];
-            if (file_exists($ruta)) {
-                unlink($ruta);
-            }
+        if ($this->eventoModel->existenEventosEnCancha($id)) {
+            $_SESSION['flash'] = [
+                'type' => 'error',
+                'message' => 'No se puede eliminar la cancha porque tiene eventos asociados.'
+            ];
+            header('Location: /canchas');
+            exit;
         }
 
         $this->model->delete($id);
 
-        header("Location: /canchas");
+        $_SESSION['flash'] = [
+            'type' => 'success',
+            'message' => 'Cancha eliminada correctamente.'
+        ];
+        header('Location: /canchas');
         exit;
     }
 

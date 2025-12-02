@@ -112,6 +112,19 @@ class Router
                 $controller->inscribir($id);
             }, 'post');
 
+            // Eliminar participante (ADMIN)
+            Route::add('/eventos/participante/eliminar/([0-9]+)/([0-9]+)', function($participacionId, $eventoId){
+                $c = new EventoController();
+                $c->eliminarParticipante($participacionId, $eventoId);
+            }, 'get');
+
+            // Añadir participante (ADMIN)
+            Route::add('/eventos/participante/agregar/([0-9]+)', function($eventoId){
+                $c = new EventoController();
+                $c->agregarParticipante($eventoId);
+            }, 'post');
+
+
             Route::add('/eventos/eliminar/([0-9]+)', function ($id) {
                 $controller = new EventoController();
                 $controller->eliminar($id);

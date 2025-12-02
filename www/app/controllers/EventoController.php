@@ -2,14 +2,17 @@
 
 require_once __DIR__ . '/../models/Evento.php';
 require_once __DIR__ . '/../models/Cancha.php';
+require_once __DIR__ . '/../models/Participacion.php';
 
 class EventoController
 {
     private $model;
+    private $participacionModel;
 
     public function __construct()
     {
         $this->model = new Evento();
+        $this->participacionModel = new Participacion();
     }
 
     public function index()
@@ -20,20 +23,19 @@ class EventoController
 
     public function show($id)
     {
-        require_once __DIR__ . '/../models/Evento.php';
-        require_once __DIR__ . '/../models/Cancha.php';
-        require_once __DIR__ . '/../models/Participacion.php';
-
-        $eventoModel = new Evento();
-        $participacionModel = new Participacion();
-
-        $evento = $eventoModel->obtenerPorId($id);
-        $participantes = $participacionModel->getByEvento($id);
+        $evento = $this->model->obtenerPorId($id);
 
         if (!$evento) {
-            (new ErrorController())->error404();
+            $errorController = new ErrorController();
+            $errorController->error404();
             return;
         }
+
+        $participantes = $this->participacionModel->getByEvento($id);
+
+        $ahora = new DateTime();
+        $fechaEvento = new DateTime($evento['fecha']);
+        $inscripcionesAbiertas = $fechaEvento > $ahora;
 
         require __DIR__ . '/../views/eventos/show.view.php';
     }
@@ -52,8 +54,35 @@ class EventoController
 
     public function guardar()
     {
-        if ($_SESSION['usuario']['rol'] !== 'admin') {
-            header("Location: /eventos");
+        if (empty($_SESSION['usuario']) || $_SESSION['usuario']['rol'] !== 'admin') {
+            $_SESSION['flash'] = [
+                'type' => 'error',
+                'message' => 'No tienes permisos para crear eventos.'
+            ];
+            header('Location: /eventos');
+            exit;
+        }
+
+        $canchaId = $_POST['cancha_id'] ?? null;
+
+        $canchaModel = new Cancha();
+        $estadoCancha = $canchaModel->getEstado($canchaId);
+
+        if (!$estadoCancha) {
+            $_SESSION['flash'] = [
+                'type' => 'error',
+                'message' => 'La cancha seleccionada no existe.'
+            ];
+            header('Location: /eventos/crear');
+            exit;
+        }
+
+        if (strtolower($estadoCancha['estado']) === 'mantenimiento') {
+            $_SESSION['flash'] = [
+                'type' => 'error',
+                'message' => 'La cancha seleccionada está en mantenimiento. Elige otra cancha.'
+            ];
+            header('Location: /eventos/crear');
             exit;
         }
 
@@ -166,59 +195,155 @@ class EventoController
 
     public function eliminar($id)
     {
-        if ($_SESSION['usuario']['rol'] !== 'admin') {
-            header("Location: /eventos");
+        if (empty($_SESSION['usuario']) || $_SESSION['usuario']['rol'] !== 'admin') {
+            $_SESSION['flash'] = [
+                'type' => 'error',
+                'message' => 'No tienes permisos para eliminar eventos.'
+            ];
+            header('Location: /eventos');
             exit;
         }
 
-        $evento = $this->model->obtenerPorId($id);
-
-        if (!$evento) {
-            http_response_code(404);
-            require __DIR__ . '/../views/errors/404.view.php';
-            return;
-        }
-
-        if (!empty($evento['imagen'])) {
-            $ruta = __DIR__ . '/../../public/uploads/eventos/' . $evento['imagen'];
-            if (file_exists($ruta)) {
-                unlink($ruta);
-            }
+        $inscritos = $this->participacionModel->countByEvento($id);
+        if ($inscritos > 0) {
+            $_SESSION['flash'] = [
+                'type' => 'error',
+                'message' => 'No se puede eliminar un evento con participantes inscritos.'
+            ];
+            header("Location: /eventos/$id");
+            exit;
         }
 
         $this->model->eliminar($id);
 
-        header("Location: /eventos");
+        $_SESSION['flash'] = [
+            'type' => 'success',
+            'message' => 'Evento eliminado correctamente.'
+        ];
+        header('Location: /eventos');
         exit;
     }
 
     public function inscribir($id)
     {
-        if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['rol'] !== 'jugador') {
+        if (empty($_SESSION['usuario']) || $_SESSION['usuario']['rol'] !== 'jugador') {
+            $_SESSION['flash'] = [
+                'type' => 'error',
+                'message' => 'Debes iniciar sesión como jugador para inscribirte.'
+            ];
             header("Location: /login");
             exit;
         }
 
         $usuarioId = $_SESSION['usuario']['id'];
-        $posicion = $_POST['posicion'];
-        $edad = $_POST['edad'];
 
-        require_once __DIR__ . '/../models/Participacion.php';
-        $participacionModel = new Participacion();
-
-        // Evitar que el usuario se inscriba dos veces
-        if ($participacionModel->yaInscrito($id, $usuarioId)) {
-            $_SESSION['error'] = "Ya estás inscrito en este evento.";
+        if ($this->participacionModel->yaInscrito($id, $usuarioId)) {
+            $_SESSION['flash'] = [
+                'type' => 'info',
+                'message' => 'Ya estás inscrito en este evento.'
+            ];
             header("Location: /eventos/$id");
             exit;
         }
 
-        // Insertar inscripción
-        $participacionModel->inscribir($id, $usuarioId, $posicion, $edad);
+        if ($this->participacionModel->tieneConflictoHorarios($usuarioId, $id)) {
+            $_SESSION['flash'] = [
+                'type' => 'error',
+                'message' => 'No puedes inscribirte, ya tienes otro evento en el mismo horario.'
+            ];
+            header("Location: /eventos/$id");
+            exit;
+        }
 
-        $_SESSION['success'] = "Inscripción realizada correctamente.";
+        $evento = $this->eventoModel->obtenerPorId($id);
+        if (!$evento) {
+            $_SESSION['flash'] = [
+                'type' => 'error',
+                'message' => 'El evento no existe.'
+            ];
+            header('Location: /eventos');
+            exit;
+        }
+
+        $inscritos = $this->participacionModel->countByEvento($id);
+        if ($inscritos >= (int) $evento['plazas']) {
+            $_SESSION['flash'] = [
+                'type' => 'error',
+                'message' => 'Este evento ya ha alcanzado el límite de plazas.'
+            ];
+            header("Location: /eventos/$id");
+            exit;
+        }
+
+        $posicion = $_POST['posicion'] ?? '';
+        $edad = $_POST['edad'] ?? '';
+
+        if (empty($posicion) || empty($edad)) {
+            $_SESSION['flash'] = [
+                'type' => 'error',
+                'message' => 'Debes indicar posición y edad para inscribirte.'
+            ];
+            header("Location: /eventos/$id");
+            exit;
+        }
+
+        $this->participacionModel->inscribir($id, $usuarioId, $posicion, (int) $edad);
+
+        $_SESSION['flash'] = [
+            'type' => 'success',
+            'message' => 'Te has inscrito correctamente al evento.'
+        ];
         header("Location: /eventos/$id");
         exit;
     }
+
+    public function eliminarParticipante($idParticipacion, $eventoId)
+    {
+        if ($_SESSION['usuario']['rol'] !== 'admin') {
+            $_SESSION['flash'] = ['type' => 'error', 'message' => 'Acceso denegado'];
+            header("Location: /eventos/$eventoId");
+            exit;
+        }
+
+        require_once __DIR__ . '/../models/Participacion.php';
+        $p = new Participacion();
+
+        $p->eliminar($idParticipacion);
+
+        $_SESSION['flash'] = ['type' => 'success', 'message' => 'Participante eliminado correctamente'];
+        header("Location: /eventos/$eventoId");
+        exit;
+    }
+
+    public function agregarParticipante($eventoId)
+    {
+        if ($_SESSION['usuario']['rol'] !== 'admin') {
+            $_SESSION['flash'] = ['type' => 'error', 'message' => 'Acceso denegado'];
+            header("Location: /eventos/$eventoId");
+            exit;
+        }
+
+        $evento = $this->model->obtenerPorId($eventoId);
+
+        // Contar participantes actuales
+        $participantesActuales = count($this->participacionModel->getByEvento($eventoId));
+
+        if ($participantesActuales >= $evento['plazas']) {
+            $_SESSION['flash'] = ['type' => 'error', 'message' => 'Este evento ya está completo. No se pueden añadir más participantes.'];
+            header("Location: /eventos/$eventoId");
+            exit;
+        }
+
+        $nombre = trim($_POST['nombre']);
+        $posicion = $_POST['posicion'];
+        $edad = $_POST['edad'];
+
+        $this->participacionModel->agregarManual($eventoId, $nombre, $posicion, $edad);
+
+        $_SESSION['flash'] = ['type' => 'success', 'message' => 'Participante añadido correctamente'];
+        header("Location: /eventos/$eventoId");
+        exit;
+    }
+
 
 }

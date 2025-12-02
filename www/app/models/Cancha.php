@@ -50,6 +50,15 @@ class Cancha extends BaseModel
         ]);
     }
 
+    public function getEstado($id)
+    {
+        $sql = "SELECT estado FROM canchas WHERE id = ?";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute([$id]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+
     public function delete($id)
     {
         $sql = "DELETE FROM canchas WHERE id = :id";

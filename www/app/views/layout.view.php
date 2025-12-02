@@ -11,6 +11,27 @@
 </head>
 <body class="d-flex flex-column min-vh-100">
 
+<?php if (!empty($_SESSION['flash'])): ?>
+    <?php $flash = $_SESSION['flash']; unset($_SESSION['flash']); ?>
+    <div id="ccToast" class="cc-toast cc-toast--<?= htmlspecialchars($flash['type']) ?>">
+        <div class="cc-toast-icon">
+            <?php if ($flash['type'] === 'success'): ?>
+                <i class="bi bi-check-circle-fill"></i>
+            <?php elseif ($flash['type'] === 'error'): ?>
+                <i class="bi bi-x-circle-fill"></i>
+            <?php else: ?>
+                <i class="bi bi-info-circle-fill"></i>
+            <?php endif; ?>
+        </div>
+        <div class="cc-toast-body">
+            <?= htmlspecialchars($flash['message']) ?>
+        </div>
+        <button type="button" class="cc-toast-close" onclick="document.getElementById('ccToast').classList.remove('show');">
+            <i class="bi bi-x-lg"></i>
+        </button>
+    </div>
+<?php endif; ?>
+
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
     <div class="container d-flex align-items-center">
 

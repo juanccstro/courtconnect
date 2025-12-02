@@ -14,6 +14,16 @@ class Evento extends BaseModel
         return $this->run($sql)->fetchAll();
     }
 
+    public function existenEventosEnCancha($canchaId)
+    {
+        $sql = "SELECT COUNT(*) AS total FROM eventos WHERE cancha_id = ?";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([$canchaId]);
+        $row = $stmt->fetch();
+        return $row && $row['total'] > 0;
+    }
+
+
     public function obtenerPorId($id)
     {
         $sql = "SELECT eventos.*, canchas.nombre AS cancha_nombre,

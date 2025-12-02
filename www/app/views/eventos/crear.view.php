@@ -30,8 +30,12 @@
     <div class="col-md-6">
         <label class="form-label">Cancha</label>
         <select name="cancha_id" class="form-select" required>
-            <?php foreach ($canchas as $cancha): ?>
-                <option value="<?= $cancha['id'] ?>"><?= htmlspecialchars($cancha['nombre']) ?></option>
+            <?php foreach ($canchas as $c): ?>
+                <option value="<?= $c['id']; ?>"
+                    <?= strtolower($c['estado']) === 'mantenimiento' ? 'disabled' : ''; ?>>
+                    <?= htmlspecialchars($c['nombre']); ?>
+                    <?= strtolower($c['estado']) === 'mantenimiento' ? ' (Mantenimiento)' : ''; ?>
+                </option>
             <?php endforeach; ?>
         </select>
     </div>

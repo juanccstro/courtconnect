@@ -87,45 +87,44 @@
 
     <!-- Formulario de inscripción -->
     <?php if (!empty($_SESSION['usuario']) && $_SESSION['usuario']['rol'] === 'jugador'): ?>
-        <div class="row mt-5">
-            <div class="col-md-8 mx-auto">
-                <div class="card shadow-sm p-4">
-                    <h4 class="fw-bold text-primary mb-3">Inscribirse al evento</h4>
+        <?php if (!empty($inscripcionesAbiertas)): ?>
+    <div class="mt-5 mb-4">
+            <form action="/eventos/inscribir/<?= $evento['id'] ?>" method="POST">
+                <h4 class="fw-bold text-primary mb-3">Inscribirse al evento</h4>
 
-                    <form action="/eventos/inscribir/<?= $evento['id'] ?>" method="POST">
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="form-label">Posición</label>
+                        <select name="posicion" class="form-select" required>
+                            <option value="">Selecciona...</option>
+                            <option>Base</option>
+                            <option>Escolta</option>
+                            <option>Alero</option>
+                            <option>Ala-Pívot</option>
+                            <option>Pívot</option>
+                        </select>
+                    </div>
 
-                        <div class="row g-3">
-
-                            <div class="col-md-6">
-                                <label class="form-label">Posición</label>
-                                <select name="posicion" class="form-select" required>
-                                    <option value="">Selecciona...</option>
-                                    <option>Base</option>
-                                    <option>Escolta</option>
-                                    <option>Alero</option>
-                                    <option>Ala-Pívot</option>
-                                    <option>Pívot</option>
-                                </select>
-                            </div>
-
-                            <div class="col-md-6">
-                                <label class="form-label">Edad</label>
-                                <input type="number" name="edad" min="12" max="65" class="form-control" required>
-                            </div>
-
-                        </div>
-
-                        <button class="btn btn-primary mt-3 w-100">Apuntarme al evento</button>
-                    </form>
+                    <div class="col-md-6">
+                        <label class="form-label">Edad</label>
+                        <input type="number" name="edad" min="16" max="40'" class="form-control" required>
+                    </div>
                 </div>
+
+                <button class="btn btn-primary mt-3 w-100">Apuntarme al evento</button>
+            </form>
+    </div>
+        <?php else: ?>
+            <div class="alert alert-secondary mt-4">
+                Las inscripciones para este evento ya están cerradas.
             </div>
-        </div>
+        <?php endif; ?>
     <?php endif; ?>
 
     <!-- Participantes -->
-    <div class="mt-5">
+    <div class="mt-5 mb-4">
 
-        <h3 class="fw-bold text-primary mb-4">Participantes</h3>
+        <h4 class="fw-bold text-light mb-4">Participantes</h4>
 
         <!-- Filtros -->
         <div class="row g-3 mb-3 participant-filters">
@@ -150,7 +149,7 @@
         </div>
 
         <?php if (empty($participantes)): ?>
-            <p class="">Aún no hay participantes registrados.</p>
+            <p class="text-light">Aún no hay participantes registrados.</p>
         <?php else: ?>
 
             <div class="table-responsive">
@@ -160,14 +159,28 @@
                         <th data-col="nombre" class="sortable">Jugador <i class="bi bi-arrow-down-up"></i></th>
                         <th data-col="posicion" class="sortable">Posición <i class="bi bi-arrow-down-up"></i></th>
                         <th data-col="edad" class="sortable">Edad <i class="bi bi-arrow-down-up"></i></th>
+                        <?php if ($_SESSION['usuario']['rol'] === 'admin'): ?>
+                            <th class="text-center">Acción</th>
+                        <?php endif; ?>
                     </tr>
                     </thead>
+
                     <tbody>
                     <?php foreach ($participantes as $p): ?>
                         <tr>
-                            <td><?= htmlspecialchars($p['usuario_nombre']) ?></td>
+                            <td><?= htmlspecialchars($p['usuario_nombre'] ?? $p['nombre_participante']) ?></td>
                             <td><?= htmlspecialchars($p['posicion']) ?></td>
                             <td><?= htmlspecialchars($p['edad']) ?></td>
+
+                            <?php if ($_SESSION['usuario']['rol'] === 'admin'): ?>
+                                <td class="text-center">
+                                    <a href="/eventos/participante/eliminar/<?= $p['id'] ?>/<?= $evento['id'] ?>"
+                                       class="btn btn-danger btn-sm"
+                                       onclick="return confirm('¿Eliminar a este jugador?');">
+                                        <i class="bi bi-trash"></i>
+                                    </a>
+                                </td>
+                            <?php endif; ?>
                         </tr>
                     <?php endforeach; ?>
                     </tbody>
@@ -176,6 +189,43 @@
 
         <?php endif; ?>
     </div>
+
+    <?php if ($_SESSION['usuario']['rol'] === 'admin'): ?>
+
+        <div class="mt-4 mb-4 add-participant">
+            <h4 class="text-light mb-3">Añadir participante</h4>
+
+            <form action="/eventos/participante/agregar/<?= $evento['id'] ?>" method="POST" class="row g-3">
+
+                <div class="col-md-6">
+                    <label class="form-label">Nombre del jugador</label>
+                    <input type="text" name="nombre" class="form-control" required>
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label">Posición</label>
+                    <select name="posicion" class="form-select" required>
+                        <option>Base</option>
+                        <option>Escolta</option>
+                        <option>Alero</option>
+                        <option>Ala-Pívot</option>
+                        <option>Pívot</option>
+                    </select>
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label">Edad</label>
+                    <input type="number" name="edad" class="form-control" min="16" max="41" required>
+                </div>
+
+                <div class="col-12 text-end">
+                    <button class="btn btn-primary px-4 mt-2">Añadir participante</button>
+                </div>
+
+            </form>
+        </div>
+
+    <?php endif; ?>
 
     <?php
 $content = ob_get_clean();
