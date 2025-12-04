@@ -56,6 +56,7 @@
                     <li class="nav-item"><a class="nav-link" href="/canchas">Canchas</a></li>
                     <li class="nav-item"><a class="nav-link" href="/eventos">Eventos</a></li>
                     <li class="nav-item"><a class="nav-link" href="/destacados">Destacados</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/quienes-somos">¿Quiénes somos?</a></li>
                 <?php endif; ?>
             </ul>
 

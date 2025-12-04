@@ -71,8 +71,8 @@
 
 <section class="cta-final text-center text-white">
     <div class="container-fluid px-0 py-5">
-        <h2 class="fw-bold mb-3">Conecta, compite y disfruta del baloncesto.</h2>
-        <a href="/register" class="btn btn-primary btn-lg">Únete ahora</a>
+        <h2 class="fw-bold mb-4">Conoce nuestra misión y cómo conectar con la comunidad del baloncesto.</h2>
+        <a href="/quienes-somos" class="btn btn-primary btn-lg">Descubre más sobre nosotros</a>
     </div>
 </section>
 

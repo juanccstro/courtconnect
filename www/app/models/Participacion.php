@@ -109,5 +109,4 @@ class Participacion extends BaseModel
         return $query->execute([$eventoId, $nombre, $posicion, $edad]);
     }
 
-
 }

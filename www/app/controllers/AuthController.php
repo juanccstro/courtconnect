@@ -28,12 +28,15 @@ class AuthController {
         $email = trim($_POST['email'] ?? '');
         $password = $_POST['password'] ?? '';
 
+        // Expresión regular para contraseña 8 caracteres y un número
+        $passwordRegex = '/^(?=.*\d)(?=.*[a-zA-Z]).{8,}$/';
+
         if (empty($email) || empty($password)) {
             $error = 'Todos los campos son obligatorios.';
         } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $error = 'El email no es válido.';
-        } elseif (strlen($password) < 8) {
-            $error = 'La contraseña debe tener al menos 8 caracteres.';
+        } elseif (!preg_match($passwordRegex, $password)) {
+            $error = 'La contraseña debe tener al menos 8 caracteres y un número.';
         } else {
             if ($this->usuario->login($email, $password)) {
                 header('Location: ' . BASE_URL);
@@ -42,6 +45,8 @@ class AuthController {
                 $error = 'Datos incorrectos.';
             }
         }
+
+        $_SESSION['form_data'] = ['email' => $email]; // Guardar datos de error
         require __DIR__ . '/../views/login.view.php';
     }
 
@@ -54,12 +59,14 @@ class AuthController {
         $confirmar = $_POST['confirmar'] ?? '';
         $rol = $_POST['rol'] ?? '';
 
+        $passwordRegex = '/^(?=.*\d)(?=.*[a-zA-Z]).{8,}$/';
+
         if (empty($nombre) || empty($email) || empty($password) || empty($confirmar)) {
             $error = 'Todos los campos son obligatorios.';
         } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $error = 'El email no es válido.';
-        } elseif (strlen($password) < 8) {
-            $error = 'La contraseña debe tener al menos 8 caracteres.';
+        } elseif (!preg_match($passwordRegex, $password)) {
+            $error = 'La contraseña debe tener al menos 8 caracteres y un número.';
         } elseif ($password !== $confirmar) {
             $error = 'Las contraseñas no coinciden.';
         } else {
@@ -70,13 +77,9 @@ class AuthController {
                 $error = 'Error al registrarse.';
             }
         }
+
+        $_SESSION['form_data'] = ['nombre' => $nombre, 'email' => $email]; // Guardamos los datos para reinsertarlos en el formulario
         require __DIR__ . '/../views/register.view.php';
     }
 
-    public function logout() {
-        session_unset();
-        session_destroy();
-        header("Location: /login");
-        exit;
-    }
 }

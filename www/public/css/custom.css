@@ -194,6 +194,33 @@ body::after {
 }
 
 /* Jugadores destacados */
+.card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.card-body {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    justify-content: space-between;
+}
+
+.card-img-top {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    object-position: center;
+}
+
+.card-body .btn {
+    margin-top: auto;
+}
+
+.card-body {
+    padding: 1rem;
+}
 
 .badge-mvp {
     background: #ffcc00;
@@ -213,6 +240,7 @@ body::after {
     font-size: 1.2rem;
     color: #b8860b;
 }
+
 
 /* Tabla de participantes */
 .table-2k {
@@ -351,6 +379,31 @@ footer {
     padding: 0.6rem 1.2rem;
     border-radius: 8px;
     font-weight: 500;
+}
+
+/* Quienes somos */
+.form-control {
+    background-color: rgba(20, 20, 20, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    color: white;
+}
+
+.form-control:focus {
+    border-color: var(--cc-secondary);
+    box-shadow: 0 0 0 0.2rem rgba(255, 102, 0, 0.35);
+}
+
+.btn-primary {
+    background: var(--cc-primary);
+    border: none;
+}
+
+.btn-primary:hover {
+    background: var(--cc-secondary);
+}
+
+.texto-descripcion{
+    font-size: 18px;
 }
 
 /* Mensajes flash */

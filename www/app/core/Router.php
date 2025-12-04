@@ -8,6 +8,7 @@ require_once __DIR__ . '/../../app/controllers/CanchaController.php';
 require_once __DIR__ . '/../../app/controllers/AuthController.php';
 require_once __DIR__ . '/../../app/controllers/DestacadosController.php';
 require_once __DIR__ . '/../../app/controllers/ParticipacionController.php';
+require_once __DIR__ . '/../../app/controllers/QuienesSomosController.php';
 require_once __DIR__ . '/../libraries/simplePHPRouter/src/Steampixel/Route.php';
 use Steampixel\Route;
 
@@ -112,13 +113,13 @@ class Router
                 $controller->inscribir($id);
             }, 'post');
 
-            // Eliminar participante (ADMIN)
+            // Eliminar participante (Admin)
             Route::add('/eventos/participante/eliminar/([0-9]+)/([0-9]+)', function($participacionId, $eventoId){
                 $c = new EventoController();
                 $c->eliminarParticipante($participacionId, $eventoId);
             }, 'get');
 
-            // Añadir participante (ADMIN)
+            // Añadir participante (Admin)
             Route::add('/eventos/participante/agregar/([0-9]+)', function($eventoId){
                 $c = new EventoController();
                 $c->agregarParticipante($eventoId);
@@ -146,6 +147,16 @@ class Router
             Route::add('/destacados/eliminar/([0-9]+)', function ($id) {
                 (new DestacadosController())->eliminar($id);
             }, 'get');
+
+            // Rutas para "Quienes Somos"
+            Route::add('/quienes-somos', function () {
+                (new QuienesSomosController())->index();
+            }, 'get');
+
+            Route::add('/quienes-somos/enviar', function () {
+                (new QuienesSomosController())->enviarFormulario();
+            }, 'post');
+
         }
 
         // Logout

@@ -54,6 +54,7 @@ class Usuario extends BaseModel
         $_SESSION['usuario'] = [
             'id'     => $usuario['id'],
             'nombre' => $usuario['nombre'],
+            'email'  => $usuario['email'],
             'rol'    => $usuario['rol']
         ];
 
