@@ -49,7 +49,7 @@ $eventoModel = new Evento();
             $totalPlazas = (int)$evento['plazas'];
             $porcentaje = $totalPlazas > 0 ? round(($ocupadas / $totalPlazas) * 100) : 0;
 
-            // Color dinámico dependiendo de participantes
+            // Color dinámico dependiendo de número de participantes
             $color = "bg-success";
             if ($porcentaje > 50) $color = "bg-warning";
             if ($porcentaje > 85) $color = "bg-danger";
