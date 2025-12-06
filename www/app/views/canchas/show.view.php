@@ -33,10 +33,8 @@
             <?= htmlspecialchars($cancha['estado']) ?>
         </p>
 
-        <a href="/canchas" class="btn btn-secondary mt-3">Volver</a>
-
         <?php if (!empty($_SESSION['usuario']) && $_SESSION['usuario']['rol'] === 'admin'): ?>
-            <div class="d-flex gap-2 mt-3 mb-3">
+            <div class="d-flex gap-2 mt-3">
                 <a href="/canchas/editar/<?= $cancha['id'] ?>" class="btn btn-warning">Editar</a>
                 <a href="/canchas/eliminar/<?= $cancha['id'] ?>" class="btn btn-danger"
                    onclick="return confirm('¿Seguro que deseas eliminar esta cancha?');">
@@ -44,6 +42,9 @@
                 </a>
             </div>
         <?php endif; ?>
+
+        <a href="/canchas" class="btn btn-secondary mt-3">Volver</a>
+
     </div>
 
 </div>

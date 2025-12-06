@@ -17,39 +17,59 @@
     <div class="row">
 
         <?php foreach ($eventos as $e): ?>
-            <div class="col-md-6 mb-4">
 
-                <div class="card shadow-sm h-100">
+            <div class="col-md-6 mb-4">
+                <div class="card shadow-sm h-100 evento-card">
+
+                    <?php if (!empty($e['imagen'])): ?>
+                        <img src="/uploads/eventos/<?= htmlspecialchars($e['imagen']) ?>"
+                             class="card-img-top evento-img"
+                             alt="<?= htmlspecialchars($e['titulo']) ?>">
+                    <?php else: ?>
+                        <img src="/img/no-img.png" class="card-img-top evento-img">
+                    <?php endif; ?>
 
                     <div class="card-body d-flex flex-column">
 
-                        <h5 class="card-title fw-bold"><?= htmlspecialchars($e['titulo']) ?></h5>
+                        <h5 class="card-title fw-bold text-white"><?= htmlspecialchars($e['titulo']) ?></h5>
 
-                        <?php if (!empty($e['imagen'])): ?>
-                            <img src="/uploads/eventos/<?= htmlspecialchars($e['imagen']) ?>"
-                                 class="card-img-top"
-                                 alt="<?= htmlspecialchars($e['titulo']) ?>">
-                        <?php else: ?>
-                            <img src="/img/no-img.png" class="card-img-top">
-                        <?php endif; ?>
-
-                        <p class=" mb-1 mt-2">
+                        <p class="mb-1 text-light">
                             <i class="bi bi-calendar-event"></i>
                             <?= date("d/m/Y H:i", strtotime($e['fecha'])) ?>
                         </p>
-
-                        <p class=" mb-1">
+                        <p class="mb-1 text-light">
                             <i class="bi bi-geo-alt"></i>
                             <?= htmlspecialchars($e['cancha_nombre']) ?>
                         </p>
-
-                        <p class="">
+                        <p class="text-light">
                             <i class="bi bi-people"></i>
                             <?= htmlspecialchars($e['plazas']) ?> plazas
                         </p>
 
-                        <a href="/eventos/<?= $e['id'] ?>"
-                           class="btn btn-outline-primary mt-auto">
+                        <!-- Sponsor del evento -->
+                        <?php
+                        $sponsorNombre = $e['sponsor_nombre'] ?? null;
+                        $sponsorLogo   = $e['sponsor_logo'] ?? null;
+
+                        if (!empty($sponsorNombre)): ?>
+                            <div class="sponsor-box mt-3 mb-3 p-2 d-flex align-items-center">
+
+                                <?php if (!empty($sponsorLogo)): ?>
+                                    <img src="/uploads/logos/<?= htmlspecialchars($sponsorLogo) ?>"
+                                         class="sponsor-logo">
+                                <?php else: ?>
+                                    <div class="sponsor-placeholder"></div>
+                                <?php endif; ?>
+
+                                <div class="text-white ps-2">
+                                    <span class="small text-uppercase opacity-75">Sponsor oficial</span><br>
+                                    <strong><?= htmlspecialchars($sponsorNombre) ?></strong>
+                                </div>
+
+                            </div>
+                        <?php endif; ?>
+
+                        <a href="/eventos/<?= $e['id'] ?>" class="btn btn-outline-primary mt-auto">
                             Ver detalles
                         </a>
 
@@ -57,6 +77,7 @@
 
                 </div>
             </div>
+
         <?php endforeach; ?>
 
     </div>

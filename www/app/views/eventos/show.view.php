@@ -1,4 +1,6 @@
-<?php ob_start(); ?>
+<?php ob_start();
+$eventoModel = new Evento();
+?>
 
 <div class="container mt-5">
 
@@ -69,7 +71,22 @@
                 </div>
             </div>
 
-            <a href="/eventos" class="btn btn-secondary mt-3">Volver a eventos</a>
+            <?php if ($_SESSION['usuario']['rol'] === 'sponsor'): ?>
+                <?php if (!empty($evento['sponsor_id'])): ?>
+                    <div class="alert alert-warning mt-3">
+                        Este evento ya tiene patrocinador asignado.
+                    </div>
+                <?php elseif ($eventoModel->sponsorYaPatrocina($_SESSION['usuario']['id'])): ?>
+                    <div class="alert alert-info mt-3">
+                        Ya has patrocinado un evento. No puedes patrocinar más.
+                    </div>
+                <?php else: ?>
+                    <a href="/eventos/patrocinar/<?= $evento['id'] ?>" class="btn btn-info mt-3">
+                        Patrocinar este evento
+                    </a>
+                <?php endif; ?>
+            <?php endif; ?>
+
 
             <?php if (!empty($_SESSION['usuario']) && $_SESSION['usuario']['rol'] === 'admin'): ?>
                 <div class="d-flex gap-2 mt-3">
@@ -79,8 +96,14 @@
                        onclick="return confirm('¿Eliminar este evento?');">
                         Eliminar
                     </a>
+                    <a href="/eventos/solicitudes/<?= $evento['id'] ?>" class="btn btn-info">
+                        Ver solicitudes de patrocinio
+                    </a>
                 </div>
             <?php endif; ?>
+
+            <a href="/eventos" class="btn btn-secondary mt-3">Volver a eventos</a>
+
         </div>
 
     </div>
@@ -160,7 +183,7 @@
                         <th data-col="posicion" class="sortable">Posición <i class="bi bi-arrow-down-up"></i></th>
                         <th data-col="edad" class="sortable">Edad <i class="bi bi-arrow-down-up"></i></th>
                         <?php if ($_SESSION['usuario']['rol'] === 'admin'): ?>
-                            <th class="text-center">Acción</th>
+                            <th class="text-center">Borrar</th>
                         <?php endif; ?>
                     </tr>
                     </thead>

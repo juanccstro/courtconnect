@@ -6,12 +6,16 @@ class Evento extends BaseModel
 {
     public function obtenerTodos()
     {
-        $sql = "SELECT eventos.*, canchas.nombre AS cancha_nombre 
-                FROM eventos
-                LEFT JOIN canchas ON eventos.cancha_id = canchas.id
-                ORDER BY fecha ASC";
+        $sql = "SELECT e.*,
+                c.nombre AS cancha_nombre,
+                p.nombre AS sponsor_nombre,
+                p.logo AS sponsor_logo
+            FROM eventos e
+            LEFT JOIN canchas c ON e.cancha_id = c.id
+            LEFT JOIN patrocinadores p ON p.usuario_id = e.sponsor_id
+            ORDER BY e.fecha ASC";
 
-        return $this->run($sql)->fetchAll();
+        return $this->run($sql)->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function existenEventosEnCancha($canchaId)
@@ -23,18 +27,22 @@ class Evento extends BaseModel
         return $row && $row['total'] > 0;
     }
 
-
     public function obtenerPorId($id)
     {
-        $sql = "SELECT eventos.*, canchas.nombre AS cancha_nombre,
-                canchas.ubicacion AS cancha_ubicacion,
-                canchas.imagen AS cancha_imagen
-                FROM eventos
-                LEFT JOIN canchas ON eventos.cancha_id = canchas.id
-                WHERE eventos.id = :id";
+        $sql = "SELECT e.*,
+                c.nombre AS cancha_nombre,
+                c.ubicacion AS cancha_ubicacion,
+                c.imagen AS cancha_imagen,
+                p.nombre AS sponsor_nombre,
+                p.logo AS sponsor_logo
+            FROM eventos e
+            LEFT JOIN canchas c ON e.cancha_id = c.id
+            LEFT JOIN patrocinadores p ON p.usuario_id = e.sponsor_id
+            WHERE e.id = :id";
 
         return $this->run($sql, [':id' => $id])->fetch();
     }
+
 
     public function crear($data)
     {
@@ -76,6 +84,21 @@ class Evento extends BaseModel
             ':imagen'    => $data['imagen']
         ]);
     }
+
+    public function asignarSponsor($eventoId, $sponsorId, $logo)
+    {
+        $sql = "UPDATE eventos 
+            SET sponsor_id = ?, sponsor_logo = ?
+            WHERE id = ?";
+
+        return $this->run($sql, [$sponsorId, $logo, $eventoId]);
+    }
+
+    public function sponsorYaPatrocina($sponsorId) {
+        $sql = "SELECT COUNT(*) FROM eventos WHERE sponsor_id = ?";
+        return $this->run($sql, [$sponsorId])->fetchColumn() > 0;
+    }
+
 
     public function eliminar($id)
     {

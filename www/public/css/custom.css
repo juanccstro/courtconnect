@@ -345,6 +345,27 @@ body::after {
     color: rgba(255,255,255,0.5);
 }
 
+/* Sponsors */
+.sponsor-box {
+    background: rgba(255,255,255,0.05);
+    border-left: 4px solid var(--cc-secondary);
+    border-radius: 8px;
+}
+
+.sponsor-logo {
+    width: 48px;
+    height: 48px;
+    border-radius: 6px;
+    object-fit: contain;
+}
+
+.sponsor-placeholder {
+    width: 48px;
+    height: 48px;
+    border-radius: 6px;
+    background: rgba(255,255,255,0.1);
+}
+
 /* Footer */
 footer {
     background: #0d0d0d;

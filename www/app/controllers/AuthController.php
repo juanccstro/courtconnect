@@ -28,7 +28,6 @@ class AuthController {
         $email = trim($_POST['email'] ?? '');
         $password = $_POST['password'] ?? '';
 
-        // Expresión regular para contraseña 8 caracteres y un número
         $passwordRegex = '/^(?=.*\d)(?=.*[a-zA-Z]).{8,}$/';
 
         if (empty($email) || empty($password)) {
@@ -46,7 +45,7 @@ class AuthController {
             }
         }
 
-        $_SESSION['form_data'] = ['email' => $email]; // Guardar datos de error
+        $_SESSION['form_data'] = ['email' => $email];
         require __DIR__ . '/../views/login.view.php';
     }
 
@@ -61,25 +60,31 @@ class AuthController {
 
         $passwordRegex = '/^(?=.*\d)(?=.*[a-zA-Z]).{8,}$/';
 
+        // Validaciones
         if (empty($nombre) || empty($email) || empty($password) || empty($confirmar)) {
-            $error = 'Todos los campos son obligatorios.';
+            $error = "Todos los campos son obligatorios.";
         } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            $error = 'El email no es válido.';
+            $error = "El email no es válido.";
         } elseif (!preg_match($passwordRegex, $password)) {
-            $error = 'La contraseña debe tener al menos 8 caracteres y un número.';
+            $error = "La contraseña debe tener al menos 8 caracteres y un número.";
         } elseif ($password !== $confirmar) {
-            $error = 'Las contraseñas no coinciden.';
-        } else {
-            if ($this->usuario->registrar($nombre, $email, $password, $rol)) {
-                header('Location: ' . BASE_URL . '/login');
-                exit;
-            } else {
-                $error = 'Error al registrarse.';
-            }
+            $error = "Las contraseñas no coinciden.";
         }
 
-        $_SESSION['form_data'] = ['nombre' => $nombre, 'email' => $email]; // Guardamos los datos para reinsertarlos en el formulario
-        require __DIR__ . '/../views/register.view.php';
+        // Si hay error, reinserta datos y muestra formulario
+        if (!empty($error)) {
+            $_SESSION['form_data'] = [
+                'nombre' => $nombre,
+                'email' => $email
+            ];
+            require __DIR__ . '/../views/register.view.php';
+            return;
+        }
+
+        $this->usuario->registrar($nombre, $email, $password, $rol);
+
+        header("Location: /login");
+        exit;
     }
 
 }

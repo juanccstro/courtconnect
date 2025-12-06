@@ -8,6 +8,7 @@ require_once __DIR__ . '/../../app/controllers/CanchaController.php';
 require_once __DIR__ . '/../../app/controllers/AuthController.php';
 require_once __DIR__ . '/../../app/controllers/DestacadosController.php';
 require_once __DIR__ . '/../../app/controllers/ParticipacionController.php';
+require_once __DIR__ . '/../../app/controllers/SponsorController.php';
 require_once __DIR__ . '/../../app/controllers/QuienesSomosController.php';
 require_once __DIR__ . '/../libraries/simplePHPRouter/src/Steampixel/Route.php';
 use Steampixel\Route;
@@ -77,6 +78,7 @@ class Router
                 $controller->eliminar($id);
             }, 'get');
 
+
             // Rutas de eventos
             Route::add('/eventos', function () {
                 $controller = new EventoController();
@@ -125,11 +127,33 @@ class Router
                 $c->agregarParticipante($eventoId);
             }, 'post');
 
-
             Route::add('/eventos/eliminar/([0-9]+)', function ($id) {
                 $controller = new EventoController();
                 $controller->eliminar($id);
             }, 'get');
+
+            // Formulario de patrocinio
+            Route::add('/eventos/patrocinar/([0-9]+)', function($id){
+                (new SponsorController())->formulario($id);
+            }, 'get');
+
+            Route::add('/eventos/patrocinar/([0-9]+)', function($id){
+                (new SponsorController())->enviar($id);
+            }, 'post');
+
+            // Admin: ver solicitudes
+            Route::add('/eventos/solicitudes/([0-9]+)', function($id){
+                (new SponsorController())->listar($id);
+            }, 'get');
+
+            Route::add('/solicitud/aceptar/([0-9]+)', function($id){
+                (new SponsorController())->aceptar($id);
+            }, 'get');
+
+            Route::add('/solicitud/rechazar/([0-9]+)', function($id){
+                (new SponsorController())->rechazar($id);
+            }, 'get');
+
 
             // Rutas de jugadores destacados
             Route::add('/destacados', function () {
@@ -147,6 +171,7 @@ class Router
             Route::add('/destacados/eliminar/([0-9]+)', function ($id) {
                 (new DestacadosController())->eliminar($id);
             }, 'get');
+
 
             // Rutas para "Quienes Somos"
             Route::add('/quienes-somos', function () {

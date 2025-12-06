@@ -10,7 +10,7 @@ class BaseModel {
         $this->db = Database::getConnection();
     }
 
-    protected function run($sql, $params = []) {
+    public function run($sql, $params = []) {
         $stmt = $this->db->prepare($sql);
         $stmt->execute($params);
         return $stmt;

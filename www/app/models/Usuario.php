@@ -7,21 +7,12 @@ class Usuario extends BaseModel
     /**
      * Registrar usuario nuevo
      */
-    public function registrar($nombre, $email, $password, $rol)
-    {
+    public function registrar($nombre, $email, $password, $rol) {
         $hash = password_hash($password, PASSWORD_DEFAULT);
 
-        $sql = "
-            INSERT INTO usuarios (nombre, email, password, rol)
-            VALUES (:nombre, :email, :password, :rol)
-        ";
-
-        return $this->run($sql, [
-            ':nombre'   => $nombre,
-            ':email'    => $email,
-            ':password' => $hash,
-            ':rol'      => $rol
-        ]);
+        $sql = "INSERT INTO usuarios (nombre, email, password, rol) VALUES (?, ?, ?, ?)";
+        $stmt = $this->db->prepare($sql);
+        return $stmt->execute([$nombre, $email, $hash, $rol]);
     }
 
     /**
