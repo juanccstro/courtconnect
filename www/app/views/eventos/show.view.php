@@ -90,7 +90,7 @@ $eventoModel = new Evento();
 
 
             <?php if (!empty($_SESSION['usuario']) && $_SESSION['usuario']['rol'] === 'admin'): ?>
-                <div class="d-flex gap-2 mt-3">
+                <div class="d-flex gap-2 mt-3 align-items-center">
                     <a href="/eventos/editar/<?= $evento['id'] ?>" class="btn btn-warning">Editar</a>
                     <a href="/eventos/eliminar/<?= $evento['id'] ?>"
                        class="btn btn-danger"
@@ -150,13 +150,12 @@ $eventoModel = new Evento();
 
         <h4 class="fw-bold text-light mb-4">Participantes</h4>
 
-        <!-- Filtros -->
-        <div class="row g-3 mb-3 participant-filters">
-            <div class="col-md-4">
+        <div class="row g-3 mb-4 participant-filters">
+            <div class="col-md-4 col-12">
                 <input type="text" id="filterNombre" class="form-control" placeholder="Buscar por nombre...">
             </div>
 
-            <div class="col-md-4">
+            <div class="col-md-4 col-12">
                 <select id="filterPosicion" class="form-select">
                     <option value="">Todas las posiciones</option>
                     <option>Base</option>
@@ -167,24 +166,26 @@ $eventoModel = new Evento();
                 </select>
             </div>
 
-            <div class="col-md-4">
+            <div class="col-md-4 col-12">
                 <input type="number" id="filterEdad" class="form-control" placeholder="Edad mínima">
             </div>
         </div>
 
         <?php if (empty($participantes)): ?>
-            <p class="text-light">Aún no hay participantes registrados.</p>
+            <div class="alert alert-dark text-center" role="alert">
+                Aún no hay participantes registrados.
+            </div>
         <?php else: ?>
 
-            <div class="table-responsive">
-                <table class="table table-2k table-hover" id="tablaParticipantes">
+            <div class="table-responsive table-card">
+                <table class="table table-2k table-hover mb-0" id="tablaParticipantes">
                     <thead>
                     <tr>
-                        <th data-col="nombre" class="sortable">Jugador <i class="bi bi-arrow-down-up"></i></th>
-                        <th data-col="posicion" class="sortable">Posición <i class="bi bi-arrow-down-up"></i></th>
-                        <th data-col="edad" class="sortable">Edad <i class="bi bi-arrow-down-up"></i></th>
+                        <th data-col="nombre" class="sortable" style="width: 40%;">JUGADOR <i class="bi bi-arrow-down-up"></i></th>
+                        <th data-col="posicion" class="sortable" style="width: 30%;">POSICIÓN <i class="bi bi-arrow-down-up"></i></th>
+                        <th data-col="edad" class="sortable" style="width: 20%;">EDAD <i class="bi bi-arrow-down-up"></i></th>
                         <?php if ($_SESSION['usuario']['rol'] === 'admin'): ?>
-                            <th class="text-center">Borrar</th>
+                            <th class="text-center" style="width: 10%;">Borrar</th>
                         <?php endif; ?>
                     </tr>
                     </thead>
@@ -192,14 +193,14 @@ $eventoModel = new Evento();
                     <tbody>
                     <?php foreach ($participantes as $p): ?>
                         <tr>
-                            <td><?= htmlspecialchars($p['usuario_nombre'] ?? $p['nombre_participante']) ?></td>
+                            <td class="fw-bold"><?= htmlspecialchars($p['usuario_nombre'] ?? $p['nombre_participante']) ?></td>
                             <td><?= htmlspecialchars($p['posicion']) ?></td>
                             <td><?= htmlspecialchars($p['edad']) ?></td>
 
                             <?php if ($_SESSION['usuario']['rol'] === 'admin'): ?>
                                 <td class="text-center">
                                     <a href="/eventos/participante/eliminar/<?= $p['id'] ?>/<?= $evento['id'] ?>"
-                                       class="btn btn-danger btn-sm"
+                                       class="btn btn-outline-danger btn-sm border-0"
                                        onclick="return confirm('¿Eliminar a este jugador?');">
                                         <i class="bi bi-trash"></i>
                                     </a>

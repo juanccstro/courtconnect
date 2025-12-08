@@ -50,7 +50,7 @@
         <input type="file" name="imagen" class="form-control" accept="image/*">
     </div>
 
-    <div class="col-12">
+    <div class="col-12 mb-3">
         <button class="btn btn-primary">Guardar cambios</button>
         <a href="/canchas/<?= $cancha['id'] ?>" class="btn btn-secondary">Cancelar</a>
     </div>

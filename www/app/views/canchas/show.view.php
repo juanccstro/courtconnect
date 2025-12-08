@@ -43,7 +43,7 @@
             </div>
         <?php endif; ?>
 
-        <a href="/canchas" class="btn btn-secondary mt-3">Volver</a>
+        <a href="/canchas" class="btn btn-secondary mt-3 mb-3">Volver</a>
 
     </div>
 
