@@ -49,7 +49,6 @@
         <select name="estado" class="form-select" required>
             <option value="abierto" <?= $evento['estado'] === 'abierto' ? 'selected' : '' ?>>Abierto</option>
             <option value="cerrado" <?= $evento['estado'] === 'cerrado' ? 'selected' : '' ?>>Cerrado</option>
-            <option value="finalizado" <?= $evento['estado'] === 'finalizado' ? 'selected' : '' ?>>Finalizado</option>
         </select>
     </div>
 

@@ -1,4 +1,6 @@
 <?php
+namespace App\controllers;
+use App\models\Usuario;
 
 require_once __DIR__ . '/../models/Usuario.php';
 

@@ -1,4 +1,5 @@
 <?php ob_start();
+use App\models\Evento;
 $eventoModel = new Evento();
 ?>
 

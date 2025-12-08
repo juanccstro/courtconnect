@@ -1,4 +1,6 @@
 <?php
+namespace App\controllers;
+use App\models\JugadorDestacado;
 
 require_once __DIR__ . '/../models/JugadorDestacado.php';
 

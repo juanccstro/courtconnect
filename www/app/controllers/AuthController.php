@@ -1,4 +1,9 @@
 <?php
+namespace App\controllers;
+use App\models\Usuario;
+use App\core\Database;
+use App\core\Auth;
+
 require_once __DIR__ . '/../models/Usuario.php';
 require_once __DIR__ . '/../core/Database.php';
 require_once __DIR__ . '/../core/Auth.php';

@@ -1,4 +1,6 @@
 <?php
+namespace App\controllers;
+use App\core\Auth;
 require_once __DIR__ . '/../core/Auth.php';
 
 class HomeController {

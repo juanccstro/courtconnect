@@ -50,7 +50,6 @@
         <select name="estado" class="form-select" required>
             <option value="abierto">Abierto</option>
             <option value="cerrado">Cerrado</option>
-            <option value="finalizado">Finalizado</option>
         </select>
     </div>
 

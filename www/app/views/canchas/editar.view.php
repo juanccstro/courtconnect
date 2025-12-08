@@ -35,7 +35,6 @@
         <label class="form-label">Estado</label>
         <select name="estado" class="form-select" required>
             <option value="disponible" <?= $cancha['estado']==='disponible'?'selected':'' ?>>Disponible</option>
-            <option value="ocupado" <?= $cancha['estado']==='ocupado'?'selected':'' ?>>Ocupado</option>
             <option value="mantenimiento" <?= $cancha['estado']==='mantenimiento'?'selected':'' ?>>En mantenimiento</option>
         </select>
     </div>

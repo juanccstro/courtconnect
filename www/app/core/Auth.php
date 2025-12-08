@@ -1,5 +1,5 @@
 <?php
-
+namespace App\core;
 class Auth {
 
     /** Verificar si hay sesión */

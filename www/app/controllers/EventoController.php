@@ -1,4 +1,9 @@
 <?php
+namespace App\controllers;
+use App\models\Evento;
+use App\models\Cancha;
+use App\models\Participacion;
+use DateTime;
 
 require_once __DIR__ . '/../models/Evento.php';
 require_once __DIR__ . '/../models/Cancha.php';
@@ -255,7 +260,7 @@ class EventoController
             exit;
         }
 
-        $evento = $this->eventoModel->obtenerPorId($id);
+        $evento = $this->model->obtenerPorId($id);
         if (!$evento) {
             $_SESSION['flash'] = [
                 'type' => 'error',
@@ -287,7 +292,15 @@ class EventoController
             exit;
         }
 
-        $this->participacionModel->inscribir($id, $usuarioId, $posicion, (int) $edad);
+        $nombreJugador = $_SESSION['usuario']['nombre'];
+
+        $this->participacionModel->inscribir(
+            $id,            // eventoId
+            $usuarioId,     // usuarioId
+            $nombreJugador, // nombre_participante
+            $posicion,      // posicion
+            (int)$edad      // edad
+        );
 
         $_SESSION['flash'] = [
             'type' => 'success',
@@ -296,6 +309,7 @@ class EventoController
         header("Location: /eventos/$id");
         exit;
     }
+
 
     public function eliminarParticipante($idParticipacion, $eventoId)
     {

@@ -1,4 +1,8 @@
 <?php
+namespace App\controllers;
+use App\models\Cancha;
+use App\models\Evento;
+
 
 require_once __DIR__ . '/../models/Cancha.php';
 require_once __DIR__ . '/../models/Evento.php';
@@ -133,7 +137,6 @@ class CanchaController
         // Si se cambia la imagen se guarda
         if (!empty($_FILES['imagen']['name'])) {
 
-            // Borrar imaxe antiga se existe
             if (!empty($cancha['imagen'])) {
                 $rutaVieja = __DIR__ . '/../../public/uploads/canchas/' . $cancha['imagen'];
                 if (file_exists($rutaVieja)) {

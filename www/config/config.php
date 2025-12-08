@@ -1,4 +1,5 @@
 <?php
+
 define('DB_HOST', 'mysql');
 define('DB_NAME', 'proxectodb');
 define('DB_USER', 'admin');

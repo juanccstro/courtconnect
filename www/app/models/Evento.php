@@ -1,5 +1,6 @@
 <?php
-
+namespace App\models;
+use PDO;
 require_once __DIR__ . '/BaseModel.php';
 
 class Evento extends BaseModel

@@ -1,4 +1,8 @@
 <?php
+namespace App\controllers;
+
+use App\models\Participacion;
+use App\models\Evento;
 
 require_once __DIR__ . '/../models/Participacion.php';
 require_once __DIR__ . '/../models/Evento.php';

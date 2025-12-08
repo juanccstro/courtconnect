@@ -30,7 +30,6 @@
         <label class="form-label">Estado</label>
         <select name="estado" class="form-select" required>
             <option value="disponible">Disponible</option>
-            <option value="ocupado">Ocupado</option>
             <option value="mantenimiento">En mantenimiento</option>
         </select>
     </div>

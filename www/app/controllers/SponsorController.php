@@ -1,7 +1,14 @@
 <?php
+namespace App\controllers;
+use App\models\SolicitudSponsor;
+use App\models\Evento;
+use App\models\Patrocinador;
+use App\core\Auth;
+
 require_once __DIR__ . '/../core/Auth.php';
 require_once __DIR__ . '/../models/SolicitudSponsor.php';
 require_once __DIR__ . '/../models/Evento.php';
+
 
 class SponsorController {
 

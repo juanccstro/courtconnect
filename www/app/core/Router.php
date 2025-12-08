@@ -1,4 +1,14 @@
 <?php
+namespace App\core;
+use App\controllers\ErrorController;
+use App\controllers\EventoController;
+use App\controllers\HomeController;
+use App\controllers\CanchaController;
+use App\controllers\AuthController;
+use App\controllers\DestacadosController;
+use App\controllers\ParticipacionController;
+use App\controllers\SponsorController;
+use App\controllers\QuienesSomosController;
 
 require_once __DIR__ . '/../../config/config.php';
 require_once __DIR__ . '/../../app/controllers/ErrorController.php';

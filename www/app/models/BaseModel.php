@@ -1,4 +1,7 @@
 <?php
+namespace App\models;
+use App\core\Database;
+use PDO;
 
 require_once __DIR__ . '/../core/Database.php';
 

@@ -1,5 +1,5 @@
 <?php
-
+namespace App\controllers;
 class ErrorController
 {
     public function error404()
