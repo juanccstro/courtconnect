@@ -34,14 +34,16 @@ class Evento extends BaseModel
                 c.nombre AS cancha_nombre,
                 c.ubicacion AS cancha_ubicacion,
                 c.imagen AS cancha_imagen,
-                p.nombre AS sponsor_nombre,
-                p.logo AS sponsor_logo
+                u.nombre AS sponsor_nombre,
+                u.logo AS sponsor_logo
             FROM eventos e
             LEFT JOIN canchas c ON e.cancha_id = c.id
-            LEFT JOIN patrocinadores p ON p.usuario_id = e.sponsor_id
+            LEFT JOIN usuarios u ON u.id = e.sponsor_id
             WHERE e.id = :id";
 
-        return $this->run($sql, [':id' => $id])->fetch();
+        $result = $this->run($sql, [':id' => $id])->fetch(PDO::FETCH_ASSOC);
+
+        return $result !== false ? $result : null;
     }
 
 
