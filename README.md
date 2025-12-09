@@ -1,5 +1,10 @@
 # Docker: PHP & MySQL
 
+Es necesario otorgar los siguientes permisos al proyecto
+```zsh
+sudo chmod -R 777 proxectodb
+```
+
 ## php
 Se ha añadido soporte para trabajar con otras versiones de php. Se ha modificado el archivo docker de la máquina para instalar:
 
@@ -135,4 +140,4 @@ Las credenciales por defecto para la conexión son:
 
 | Usuario | Clave | Base de datos |
 |:---:|:---:|:---:|
-| admin | daw2pass | myproject-db |
+| root | daw2pass | proxectodb |

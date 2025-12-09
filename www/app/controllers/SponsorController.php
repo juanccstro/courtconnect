@@ -19,7 +19,7 @@ class SponsorController {
         $eventoModel = new Evento();
         $evento = $eventoModel->obtenerPorId($eventoId);
 
-        // Si el evento ya tiene sponsor → bloquear
+        // Si el evento ya tiene sponsor lo bloquea
         if (!empty($evento['sponsor_id'])) {
             $_SESSION['flash'] = [
                 'type' => 'error',
@@ -29,7 +29,7 @@ class SponsorController {
             exit;
         }
 
-        // Si este sponsor ya patrocinó otro evento → bloquear
+        // Si este sponsor ya patrocinó otro evento lo bloquea
         if ($eventoModel->sponsorYaPatrocina($_SESSION['usuario']['id'])) {
             $_SESSION['flash'] = [
                 'type' => 'error',

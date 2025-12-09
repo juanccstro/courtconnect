@@ -32,7 +32,6 @@
     <div class="col-md-6">
         <label class="form-label">Cancha</label>
         <select name="cancha_id" class="form-select" required>
-            <!-- Aquí deberías cargar as canchas desde a base de datos -->
             <option value="1" <?= $evento['cancha_id'] === 1 ? 'selected' : '' ?>>Parque Lourido</option>
             <option value="2" <?= $evento['cancha_id'] === 2 ? 'selected' : '' ?>>O Grove</option>
             <option value="3" <?= $evento['cancha_id'] === 3 ? 'selected' : '' ?>>Samil</option>
