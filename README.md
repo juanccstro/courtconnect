@@ -2,7 +2,7 @@
 
 Es necesario otorgar los siguientes permisos al proyecto
 ```zsh
-sudo chmod -R 777 proxectodb
+sudo chmod -R 777 proxecto-final
 ```
 
 ## php
