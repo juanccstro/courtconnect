@@ -141,3 +141,14 @@ Las credenciales por defecto para la conexión son:
 | Usuario | Clave | Base de datos |
 |:---:|:---:|:---:|
 | root | daw2pass | proxectodb |
+
+Usuarios de prueba:
+
+|                       Usuario (email)                       | Contraseña |
+| :---------------------------------------------------------: | :--------: |
+| [castro.pazo.jc@gmail.com](mailto:castro.pazo.jc@gmail.com) |  testtest1 |
+|         [durant@gmail.com](mailto:durant@gmail.com)         |  testtest1 |
+|           [cone@gmail.com](mailto:cone@gmail.com)           |  testtest1 |
+|      [decathlon@gmail.com](mailto:decathlon@gmail.com)      |  testtest1 |
+|    [portalconsa@gmail.com](mailto:portalconsa@gmail.com)    |  testtest1 |
+
